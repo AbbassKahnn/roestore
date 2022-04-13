@@ -32,6 +32,7 @@ if (config.environment != 'test') {
 	const specs = require('./swagger');
 	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs.default));
 }
+app.use('/users', require('./api/routes/users.routes'));
 
 app.get('/', (req, res) => {
 	const help = `

@@ -8,9 +8,9 @@ const options = {
 		openapi: '3.0.3',
 		// Like the one described here: https://swagger.io/specification/#infoObject
 		info: {
-			description: 'STUDENT SECURITY',
+			description: 'Roehampton eStore',
 			swagger: '2.0',
-			title: 'STUDENT SECURITY API',
+			title: 'Roehampton eStore API',
 			version: '1.0.0',
 		},
 		components: {

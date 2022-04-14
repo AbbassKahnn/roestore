@@ -1,5 +1,6 @@
 const express = require('express');
 const Controller = require('../controllers/users.controller');
+const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
 const Router = express.Router();
@@ -20,7 +21,7 @@ const Router = express.Router();
   *          200:
   *              description: Received users.
   */
-Router.get('/', [Controller.getAllUsers, ErrorHandler]);
+Router.get('/', [auth, Controller.getAllUsers, ErrorHandler]);
 
 /**
   * @swagger

@@ -144,7 +144,7 @@ exports.login = async (req, res, next) => {
               last_name: user[0].last_name,
               email: user[0].email,
               created_at: user[0].created_at,
-			  updated_at: user[0].updated_at,
+			        updated_at: user[0].updated_at,
               phone_number: user[0].phone_number,
             },
             process.env.SECRET, //env secret is picked from env file

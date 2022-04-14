@@ -3,7 +3,6 @@ const { ReasonPhrases } = require('http-status-codes');
 const jsonwebtoken = require('jsonwebtoken');
 const ResponseModel = require('../constants/response.constant');
 
-
 /**
  * 
  * @param {*} authorizationHeader 

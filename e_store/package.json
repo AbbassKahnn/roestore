@@ -1,15 +1,11 @@
 {
-  "name": "roehampton_estore",
+  "name": "e_store",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AbbassKahnn/Roehampton_eStore.git"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -31,9 +27,5 @@
     "nodemon": "^2.0.6"
   },
   "author": "abbass khan",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AbbassKahnn/Roehampton_eStore/issues"
-  },
-  "homepage": "https://github.com/AbbassKahnn/Roehampton_eStore#readme"
+  "license": "ISC"
 }

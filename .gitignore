@@ -1,10 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/authentication/node_modules
+/e_store/node_modules
 
 # production
-/build
+/authentication/build
+/e_store/build
 
 # environment variables
 .env

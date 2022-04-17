@@ -7,7 +7,7 @@ async function applySequelizeSetup(sequelize) {
 	// if (Config.environment === 'debug') {
 	// 	
 	// }
-	await sequelize.sync();
+	// await sequelize.sync();
 }
 
 module.exports = { applySequelizeSetup };

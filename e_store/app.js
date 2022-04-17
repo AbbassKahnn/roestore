@@ -23,6 +23,11 @@ app.use(express.urlencoded({
 // app.use(express.json());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.use('/product', require('./api/routes/product.route'));
+app.use('/product_detail', require('./api/routes/productDetail.route'));
+app.use('/product_images', require('./api/routes/product_images.route'));
+
+
 
 // app.use(bodyParser.json());
 app.set('trust proxy', true);

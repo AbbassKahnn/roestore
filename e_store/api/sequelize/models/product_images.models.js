@@ -2,22 +2,26 @@ const DataType = require('sequelize');
 const dbConfig = require('../../../config').dbconfig;
 
 module.exports = (sequelize) => {
-	sequelize.define('users', {
-		product_id: {
+	sequelize.define('product_images', {
+		product_images_id: {
 			type: DataType.INTEGER,
 			autoIncrement: true,
 			primaryKey: true,
 		},
-		name: {
+		image_title: {
 			type: DataType.STRING,
 			allowNull: false,
 		},
-		title: {
+		image: {
 			type: DataType.STRING,
 			allowNull: false,
 		},
 		description: {
 			type: DataType.STRING,	
+			allowNull: false,		
+		},
+        product_id: {
+			type: DataType.INTEGER,	
 			allowNull: false,		
 		},
 		created_at: {

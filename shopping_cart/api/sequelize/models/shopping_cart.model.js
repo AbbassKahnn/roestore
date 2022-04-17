@@ -1,6 +1,6 @@
 module.exports = (sequelize) => {
 	sequelize.define('product_detail', {
-		prshopping_cart_id: {
+		shopping_cart_id: {
 			type: DataType.INTEGER,
 			autoIncrement: true,
 			primaryKey: true,

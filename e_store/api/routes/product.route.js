@@ -23,7 +23,6 @@ const Router = express.Router();
   */
 Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
 
-
 /**
   * @swagger
   * /product/{product_id}:
@@ -47,6 +46,31 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   */
  Router.get('/:product_id', [auth, Controller.getSingleProduct, ErrorHandler]);
 
+ 
+/**
+  * @swagger
+  * /product/catagory/{product_catagories_id}:
+  *  get:
+  *      tags:
+  *          - PRODUCT
+  *      name: product
+  *      produces:
+  *          - application/json
+  *      consumes:
+  *          - application/json
+  *      summary: This should get all products by catagory id.
+  *      parameters:
+  *          - name: product_catagories_id
+  *            in: path
+  *            type: integer
+  *            require: true
+  *      responses:
+  *          200:
+  *              description: Received products.
+  */
+Router.get('/catagory/:product_catagories_id', [auth, Controller.getAllProductByCatagory, ErrorHandler]);
+
+
 /**
   * @swagger
   * /product:
@@ -65,13 +89,11 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     product_id:
-  *                        type: integer
   *                     name:
   *                        type: string
   *                     title:
   *                        type: string
-  *                     discription:
+  *                     description:
   *                        type: string
   *                     price:
   *                        type: string
@@ -111,7 +133,7 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   *                        type: string
   *                     title:
   *                        type: string
-  *                     discription:
+  *                     description:
   *                        type: string
   *                     price:
   *                        type: string

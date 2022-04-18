@@ -7,17 +7,17 @@ const sequelize = require("../sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.getallproductDetail = async(req,res,next) => {
+exports.getAllProductDetail = async(req,res,next) => {
     const response = new ResponseModel();
     try {
-    const productdetail = await sequelize.query(`
+    const productDetail = await sequelize.query(`
     SELECT *
     FROM product_detail
     `,{
         type: QueryTypes.SELECT
     });
     console.info('all records are fetched from database');
-    response.setData(productdetail);
+    response.setData(productDetail);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -40,7 +40,7 @@ exports.getallproductDetail = async(req,res,next) => {
 
 };
 
-exports.postproductDetail = async(req,res,next) => {
+exports.postProductDetail = async(req,res,next) => {
     console.log("🚀 ~ file: productDetail.controller.js ~ line 44 ~ exports.postproductDetail=async ~ req", req.body)
     const response = new ResponseModel();
     const {
@@ -53,7 +53,7 @@ exports.postproductDetail = async(req,res,next) => {
        supple_ability
     } = req.body;
     try {
-        const postprodetail = await sequelize.query(
+        const postProdetail = await sequelize.query(
             `
             INSERT INTO e_commerce_store.product_detail
             (
@@ -77,9 +77,9 @@ exports.postproductDetail = async(req,res,next) => {
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(postprodetail);
+            response.setData(postProdetail);
             response.setStatus(ReasonPhrases.CREATED);
-            return res.status(StatusCodes.CREATED).send(postprodetail);
+            return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
         console.log("🚀 ~ file: productDetail.controller.js ~ line 86 ~ exports.postproductDetail=async ~ err", err)
         if (
@@ -111,7 +111,7 @@ exports.updateProductDetail = async(req,res,next) => {
 
     } = req.body;
     try {
-        const updateprodetail = await sequelize.query(
+        const updateProeDtail = await sequelize.query(
             `
            UPDATE e_commerce_store.product_detail
             SET 
@@ -126,9 +126,9 @@ exports.updateProductDetail = async(req,res,next) => {
             `, {
                 type: QueryTypes.UPDATE
             });
-            response.setData(updateprodetail);
+            response.setData(updateProeDtail);
             response.setStatus(ReasonPhrases.OK);
-            return res.status(StatusCodes.OK).send(updateprodetail);
+            return res.status(StatusCodes.OK).send(response);
     } catch (err) {
         console.log("🚀 ~ file: productDetail.controller.js ~ line 136 ~ exports.updateProductDetail=async ~ err", err)
         if (
@@ -148,10 +148,10 @@ exports.updateProductDetail = async(req,res,next) => {
       }
 };
 
-exports.deleteproductDetail = async(req,res, next)=> {
+exports.deleteProductDetail = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
-    const delprodetail =  await sequelize.query(`
+    const delProDetail =  await sequelize.query(`
     DELETE FROM e_commerce_store.product_detail
     WHERE product_id = ${req.body.product_detail_id}
     
@@ -161,7 +161,7 @@ try {
     console.info('product deleted detail successfully');
     response.setData('deleted successfully' );
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delprodetail);
+    return res.status(StatusCodes.OK).send(response);
 } catch (err) {
 console.log("🚀 ~ file: productDetail.controller.js ~ line 167 ~ exports.deleteproduct ~ err", err)
 if (

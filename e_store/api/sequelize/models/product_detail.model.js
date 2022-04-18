@@ -32,6 +32,10 @@ module.exports = (sequelize) => {
     product_id:{
         type: DataType.INTEGER,
         allowNull: false,
+		references: {
+			model: 'product',
+			key: 'product_id',
+		},
     },
         
 		created_at: {

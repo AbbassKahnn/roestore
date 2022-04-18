@@ -5,7 +5,7 @@ const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 
-exports.getAllProduct = async (req, res, next) => {
+exports.getAllrPoduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
     const product = await sequelize.query(`
@@ -113,7 +113,7 @@ exports.getAllProductByCatagory = async (req, res, next) => {
 
 };
 
-exports.postproduct = async (req, res, next) => {
+exports.postProduct = async (req, res, next) => {
   const response = new ResponseModel();
   const {
     name,
@@ -125,7 +125,7 @@ exports.postproduct = async (req, res, next) => {
     product_catagories_id
   } = req.body;
   try {
-    const postproduct = await sequelize.query(
+    const postProduct = await sequelize.query(
       `
             INSERT INTO e_commerce_store.product
             (
@@ -154,9 +154,9 @@ exports.postproduct = async (req, res, next) => {
             `, {
       type: QueryTypes.INSERT
     });
-    response.setData(postproduct);
+    response.setData(postProduct);
     response.setStatus(ReasonPhrases.CREATED);
-    return res.status(StatusCodes.CREATED).send(postproduct);
+    return res.status(StatusCodes.CREATED).send(response);
   } catch (err) {
     console.log("🚀 ~ file: product.controller.js ~ line 84 ~ exports.postproduct=async ~ err", err)
     if (
@@ -187,8 +187,9 @@ exports.updateProduct = async (req, res, next) => {
     quantity,
     color
   } = req.body;
+  console.log("🚀 ~ file: product.controller.js ~ line 190 ~ exports.updateProduct= ~ req", req.body)
   try {
-    const updateproduct = await sequelize.query(
+    const updateProduct = await sequelize.query(
       `
            UPDATE e_commerce_store.product
             SET            
@@ -198,15 +199,15 @@ exports.updateProduct = async (req, res, next) => {
                 price  =  '${price}',
                 quantity =  '${quantity}',
                 color = '${color}', 
-                updated_at='${Date.now()}'
+                NOW()
             where  product_id ='${product_id}'
      
             `, {
       type: QueryTypes.UPDATE
     });
-    response.setData(updateproduct);
+    response.setData(updateProduct);
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(updateproduct);
+    return res.status(StatusCodes.OK).send(response);
   } catch (err) {
     console.log("🚀 ~ file: product.controller.js ~ line 134 ~ exports.postproduct=async ~ err", err)
     if (
@@ -226,10 +227,10 @@ exports.updateProduct = async (req, res, next) => {
   }
 };
 
-exports.deleteproduct = async (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
-    const delproduct = await sequelize.query(`
+    const delPoduct = await sequelize.query(`
     DELETE FROM e_commerce_store.product
     WHERE product_id = ${req.body.product_id}
     
@@ -239,7 +240,7 @@ exports.deleteproduct = async (req, res, next) => {
     console.info('product deleted successfully');
     response.setData('deleted successfully');
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delproduct);
+    return res.status(StatusCodes.OK).send(response);
   } catch (err) {
     console.log("🚀 ~ file: product.controller.js ~ line 166 ~ exports.deleteproduct ~ err", err)
     if (

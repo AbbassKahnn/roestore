@@ -21,7 +21,7 @@ const Router = express.Router();
   *          200:
   *              description: Received product detail.
   */
-Router.get('/', [auth, Controller.getallproductDetail, ErrorHandler]);
+Router.get('/', [auth, Controller.getAllProductDetail, ErrorHandler]);
 
 /**
   * @swagger
@@ -59,7 +59,7 @@ Router.get('/', [auth, Controller.getallproductDetail, ErrorHandler]);
   *          '200':
   *              description: New product added.
   */
- Router.post('/', [Controller.postproductDetail, ErrorHandler]);
+ Router.post('/', [Controller.postProductDetail, ErrorHandler]);
 
   /**
   * @swagger
@@ -123,6 +123,6 @@ Router.get('/', [auth, Controller.getallproductDetail, ErrorHandler]);
   *          '200':
   *              description: product deleted.
   */
-      Router.delete('/', [Controller.deleteproductDetail, ErrorHandler]);
+      Router.delete('/', [Controller.deleteProductDetail, ErrorHandler]);
 
 module.exports = Router;

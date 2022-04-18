@@ -7,17 +7,17 @@ const sequelize = require("../sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.getallproductImages = async(req,res,next) => {
+exports.getAllProductImages = async(req,res,next) => {
     const response = new ResponseModel();
     try {
-    const productimages = await sequelize.query(`
+    const productImages = await sequelize.query(`
     SELECT *
     FROM product_images
     `,{
         type: QueryTypes.SELECT
     });
     console.info('all records are fetched from database');
-    response.setData(productimages);
+    response.setData(productImages);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -40,38 +40,38 @@ exports.getallproductImages = async(req,res,next) => {
 
 };
 
-exports.postproductImages = async(req,res,next) => {
+exports.postProductImages = async(req,res,next) => {
     const response = new ResponseModel();
     const {
         product_id,
         image_title,
         image,
-        discription
+        description
 
     } = req.body;
     try {
-        const postproImages = await sequelize.query(
+        const postProImages = await sequelize.query(
             `
             INSERT INTO e_commerce_store.product_images
             (
                 product_id,
                 image_title,
                 image,
-                discription
+                description
             )
             values(
                 '${product_id}',
                 '${image_title}',
                 '${image}',
-                '${discription}'
+                '${description}'
 
            )     
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(postproImages);
+            response.setData(postProImages);
             response.setStatus(ReasonPhrases.CREATED);
-            return res.status(StatusCodes.CREATED).send(postproImages);
+            return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
         console.log("🚀 ~ file: productImages.controller.js ~ line 76 ~ exports.postproductImages=async ~ err", req.body)
         if (
@@ -97,25 +97,25 @@ exports.updateProductImage = async(req,res,next) => {
       product_id,
       image_title,
       image,
-      discription
+      description
 
     } = req.body;
     try {
-        const updateproimages = await sequelize.query(
+        const updatePoImages = await sequelize.query(
             `
            UPDATE e_commerce_store.product_images
             SET 
             product_id ='${product_id}',
             image_title ='${image_title}',
             image = '${image}',
-            discription = '${discription}'  
+            description = '${description}'  
      
             `, {
                 type: QueryTypes.UPDATE
             });
-            response.setData(updateproimages);
+            response.setData(updatePoImages);
             response.setStatus(ReasonPhrases.OK);
-            return res.status(StatusCodes.OK).send(updateproimages);
+            return res.status(StatusCodes.OK).send(response);
     } catch (err) {
         console.log("🚀 ~ file: productImages.controller.js ~ line 120 ~ exports.updateProductImage=async ~ err", err)
         if (
@@ -135,10 +135,10 @@ exports.updateProductImage = async(req,res,next) => {
       }
 };
 
-exports.deleteproductImage = async(req,res, next)=> {
+exports.deleteProductImage = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
-    const delproImages =  await sequelize.query(`
+    const delProImages =  await sequelize.query(`
     DELETE FROM e_commerce_store.product_images
     WHERE product_id = ${req.body.product_id}
     
@@ -148,7 +148,7 @@ try {
     console.info('product deleted images successfully');
     response.setData('deleted successfully' );
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delproImages);
+    return res.status(StatusCodes.OK).send(response);
 } catch (err) {
 console.log("🚀 ~ file: productImages.controller.js ~ line 153 ~ exports.deleteproductImage ~ err", err)
 if (

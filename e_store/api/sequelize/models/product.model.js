@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
 		product_catagories_id:{
 			type: DataType.INTEGER,
 			allowNull: false,
+			references: {
+				model: 'product_catagories',
+				key: 'product_catagories_id',
+			},
 		},
 		created_at: {
 			type: DataType.DATE,

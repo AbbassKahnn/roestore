@@ -21,7 +21,7 @@ const Router = express.Router();
   *          200:
   *              description: Received product images.
   */
-Router.get('/', [auth, Controller.getallproductImages, ErrorHandler]);
+Router.get('/', [auth, Controller.getAllProductImages, ErrorHandler]);
 
 /**
   * @swagger
@@ -47,13 +47,13 @@ Router.get('/', [auth, Controller.getallproductImages, ErrorHandler]);
   *                        type: string
   *                     image:
   *                        type: string
-  *                     discription:
+  *                     description:
   *                        type: string
   *      responses:
   *          '200':
   *              description: New product images are added.
   */
- Router.post('/', [Controller.postproductImages, ErrorHandler]);
+ Router.post('/', [Controller.postProductImages, ErrorHandler]);
 
   /**
   * @swagger
@@ -79,7 +79,7 @@ Router.get('/', [auth, Controller.getallproductImages, ErrorHandler]);
   *                        type: string
   *                     image:
   *                        type: string
-  *                     discription:
+  *                     description:
   *                        type: string
   *      responses:
   *          '200':
@@ -111,6 +111,6 @@ Router.get('/', [auth, Controller.getallproductImages, ErrorHandler]);
   *          '200':
   *              description: product images deleted.
   */
-      Router.delete('/', [Controller.deleteproductImage, ErrorHandler]);
+      Router.delete('/', [Controller.deleteProductImage, ErrorHandler]);
 
 module.exports = Router;

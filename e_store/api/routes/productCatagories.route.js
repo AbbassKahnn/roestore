@@ -1,5 +1,5 @@
 const express = require('express');
-const Controller = require('../controllers/product.controller');
+const Controller = require('../controllers/productCatagories.controller');
 const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
@@ -7,11 +7,11 @@ const Router = express.Router();
 
 /**
   * @swagger
-  * /product:
+  * /product_catagory:
   *  get:
   *      tags:
-  *          - PRODUCT
-  *      name: product
+  *          - PRODUCT CATAGORY
+  *      name: Product catagory
   *      produces:
   *          - application/json
   *      consumes:
@@ -21,23 +21,23 @@ const Router = express.Router();
   *          200:
   *              description: Received products.
   */
-Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
+Router.get('/', [auth, Controller.getAllCatagories, ErrorHandler]);
 
 
 /**
   * @swagger
-  * /product/{product_id}:
+  * /product_catagory/{product_catagories_id}:
   *  get:
   *      tags:
-  *          - PRODUCT
-  *      name: product
+  *          - PRODUCT CATAGORY
+  *      name: Product catagory
   *      produces:
   *          - application/json
   *      consumes:
   *          - application/json
   *      summary: This should get single product with all data.
   *      parameters:
-  *          - name: product_id
+  *          - name: product_catagories_id
   *            in: path
   *            type: integer
   *            require: true
@@ -45,15 +45,15 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   *          200:
   *              description: Received products.
   */
- Router.get('/:product_id', [auth, Controller.getSingleProduct, ErrorHandler]);
+ Router.get('/:product_catagories_id', [auth, Controller.getSingleProductCatagory, ErrorHandler]);
 
 /**
   * @swagger
-  * /product:
+  * /product_catagory:
   *  post:
   *      tags:
-  *          - PRODUCT
-  *      name: product
+  *          - PRODUCT CATAGORY
+  *      name: Product catagory
   *      produces:
   *          - application/json
   *      consumes:
@@ -65,35 +65,25 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     product_id:
-  *                        type: integer
   *                     name:
   *                        type: string
-  *                     title:
+  *                     image:
   *                        type: string
-  *                     discription:
+  *                     description:
   *                        type: string
-  *                     price:
-  *                        type: string
-  *                     quantity:
-  *                        type: string
-  *                     color:
-  *                        type: string
-  *                     product_catagories_id:
-  *                        type: integer
   *      responses:
   *          '200':
   *              description: New product added.
   */
- Router.post('/', [Controller.postproduct, ErrorHandler]);
+ Router.post('/', [Controller.createProductCatagory, ErrorHandler]);
 
   /**
   * @swagger
-  * /product:
+  * /product_catagory:
   *  put:
   *      tags:
-  *          - PRODUCT
-  *      name: product
+  *          - PRODUCT CATAGORY
+  *      name: Product catagory
   *      produces:
   *          - application/json
   *      consumes:
@@ -105,50 +95,41 @@ Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     product_id:
+  *                     product_catagories_id:
   *                        type: integer
   *                     name:
   *                        type: string
-  *                     title:
+  *                     image:
   *                        type: string
-  *                     discription:
-  *                        type: string
-  *                     price:
-  *                        type: string
-  *                     quantity:
-  *                        type: string
-  *                     color:
+  *                     description:
   *                        type: string
   *      responses:
   *          '200':
   *              description: product updated.
   */
-   Router.put('/', [Controller.updateProduct, ErrorHandler]);
+   Router.put('/', [Controller.updateProductCatagory, ErrorHandler]);
 
      /**
   * @swagger
-  * /product:
+  * /product_catagory/{product_catagories_id}:
   *  delete:
   *      tags:
-  *          - PRODUCT
-  *      name: product
+  *          - PRODUCT CATAGORY
+  *      name: Product catagory
   *      produces:
   *          - application/json
   *      consumes:
   *          - application/json
   *      summary: This should delete the product.
-  *      requestBody:
-  *         content:
-  *            application/json:
-  *               schema:
-  *                  type: object
-  *                  properties:
-  *                     product_id:
-  *                        type: integer
+  *      parameters:
+  *          - name: product_catagories_id
+  *            in: path
+  *            type: integer
+  *            require: true
   *      responses:
   *          '200':
   *              description: product deleted.
   */
-      Router.delete('/', [Controller.deleteproduct, ErrorHandler]);
+   Router.delete('/:product_catagories_id', [Controller.deleteProductCatagory, ErrorHandler]);
 
 module.exports = Router;

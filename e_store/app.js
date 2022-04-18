@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5
 app.use('/product', require('./api/routes/product.route'));
 app.use('/product_detail', require('./api/routes/productDetail.route'));
 app.use('/product_images', require('./api/routes/product_images.route'));
+app.use('/product_catagory', require('./api/routes/productCatagories.route'));
 
 
 

@@ -4,21 +4,18 @@ const { QueryTypes } = require("sequelize");
 const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-exports.getAllProduct = async(req,res,next) => {
+exports.getAllCatagories = async(req,res,next) => {
     const response = new ResponseModel();
     try {
-    const product = await sequelize.query(`
+    const productCatagories = await sequelize.query(`
     SELECT *
-    FROM product p
-    left join product_images pi on pi.product_id = p.product_id
+    FROM product_catagories p
     `,{
         type: QueryTypes.SELECT
     });
     console.info('all records are fetched from database');
-    response.setData(product);
+    response.setData(productCatagories);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -41,21 +38,19 @@ exports.getAllProduct = async(req,res,next) => {
 
 };
 
-exports.getSingleProduct = async(req,res,next) => {
+exports.getSingleProductCatagory = async(req,res,next) => {
   const response = new ResponseModel();
   try {
-    const {product_id} = req.params;
-  const product = await sequelize.query(`
+    const {product_catagories_id} = req.params;
+  const productCatagory = await sequelize.query(`
   SELECT *
-  FROM product p 
-  left join product_images pi on pi.product_id = p.product_id
-  left join product_detail pd on pd.product_id = p.product_id
-  where p.product_id = ${product_id}
+  FROM product_catagories p 
+  where p.product_catagories_id = ${product_catagories_id}
   `,{
       type: QueryTypes.SELECT
   });
   console.info('all records are fetched from database');
-  response.setData(product);
+  response.setData(productCatagory);
   response.setStatus(ReasonPhrases.OK);
   return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -75,52 +70,35 @@ exports.getSingleProduct = async(req,res,next) => {
   };
   return next();
 }
-
 };
 
-exports.postproduct = async(req,res,next) => {
+exports.createProductCatagory = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        product_id,
         name,
-        title,
-        discription,
-        price,
-       quantity,
-       color,
-       product_catagories_id
+        image,
+        description,
     } = req.body;
     try {
-        const postproduct = await sequelize.query(
+        const create = await sequelize.query(
             `
-            INSERT INTO e_commerce_store.product
+            INSERT INTO e_commerce_store.product_catagories
             (
-                product_id,
                 name,
-                title,
-                discription,
-                price,
-               quantity,
-               color,
-               product_catagories_id 
+                image,
+                description
             )
             values(
-                '${product_id}',
                 '${name}',
-                '${title}',
-                '${discription}',
-                '${price}',
-                '${quantity}',
-                '${color}',
-                ${product_catagories_id}
-
+                '${image}',
+                '${description}'
            )     
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(postproduct);
+            response.setData(create);
             response.setStatus(ReasonPhrases.CREATED);
-            return res.status(StatusCodes.CREATED).send(postproduct);
+            return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
         console.log("🚀 ~ file: product.controller.js ~ line 84 ~ exports.postproduct=async ~ err", err)
         if (
@@ -140,37 +118,29 @@ exports.postproduct = async(req,res,next) => {
       }
 };
 
-exports.updateProduct = async(req,res,next) => {
+exports.updateProductCatagory = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        product_id,
-        name,
-        title,
-        discription,
-        price,
-       quantity,
-       color
+      product_catagories_id,
+      name,
+      image,
+      description,
     } = req.body;
     try {
         const updateproduct = await sequelize.query(
             `
-           UPDATE e_commerce_store.product
+           UPDATE e_commerce_store.product_catagories
             SET            
-                product_id ='${product_id}',
                 name ='${name}',
-                title = '${title}',
-                discription = '${discription}',
-                price  =  '${price}',
-                quantity =  '${quantity}',
-                color = '${color}' 
-            
-     
+                image = '${image}',
+                description = '${description}'
+              where product_catagories_id = ${product_catagories_id}
             `, {
                 type: QueryTypes.UPDATE
             });
             response.setData(updateproduct);
             response.setStatus(ReasonPhrases.OK);
-            return res.status(StatusCodes.OK).send(updateproduct);
+            return res.status(StatusCodes.OK).send(response);
     } catch (err) {
     console.log("🚀 ~ file: product.controller.js ~ line 134 ~ exports.postproduct=async ~ err", err)        
         if (
@@ -190,12 +160,12 @@ exports.updateProduct = async(req,res,next) => {
       }
 };
 
-exports.deleteproduct = async(req,res, next)=> {
+exports.deleteProductCatagory = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delproduct =  await sequelize.query(`
-    DELETE FROM e_commerce_store.product
-    WHERE product_id = ${req.body.product_id}
+    DELETE FROM e_commerce_store.product_catagories
+    WHERE product_catagories_id = ${req.params.product_catagories_id}
     
     `,{ 
         type: QueryTypes.DELETE
@@ -203,7 +173,7 @@ try {
     console.info('product deleted successfully');
     response.setData('deleted successfully' );
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delproduct);
+    return res.status(StatusCodes.OK).send(response);
 } catch (err) {
 console.log("🚀 ~ file: product.controller.js ~ line 166 ~ exports.deleteproduct ~ err", err)
 if (

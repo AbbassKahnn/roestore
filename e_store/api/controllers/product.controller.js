@@ -7,12 +7,13 @@ const sequelize = require("../sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.getallproduct = async(req,res,next) => {
+exports.getAllProduct = async(req,res,next) => {
     const response = new ResponseModel();
     try {
     const product = await sequelize.query(`
     SELECT *
-    FROM product
+    FROM product p
+    left join product_images pi on pi.product_id = p.product_id
     `,{
         type: QueryTypes.SELECT
     });
@@ -37,6 +38,44 @@ exports.getallproduct = async(req,res,next) => {
     };
     return next();
   }
+
+};
+
+exports.getSingleProduct = async(req,res,next) => {
+  const response = new ResponseModel();
+  try {
+    const {product_id} = req.params;
+    console.log("🚀 ~ file: product.controller.js ~ line 48 ~ exports.getSingleProduct=async ~ req.params", req.params)
+  const product = await sequelize.query(`
+  SELECT *
+  FROM product p 
+  left join product_images pi on pi.product_id = p.product_id
+  left join product_detail pd on pd.product_id = p.product_id
+  where p.product_id = ${product_id}
+  `,{
+      type: QueryTypes.SELECT
+  });
+  console.info('all records are fetched from database');
+  response.setData(product);
+  response.setStatus(ReasonPhrases.OK);
+  return res.status(StatusCodes.OK).send(response);
+} catch (err) {
+  console.error(`Get all user error! ${err}`);
+  if (
+    err.ValidationError ||
+    err.SyntaxError ||
+    err.ForeignKeyConstraintError
+  ) {
+    req.body = {
+      errorKey: ErrorKey.BAD_REQUEST,
+    };
+    return next();
+  }
+  req.body = {
+    errorKey: ErrorKey.PARTIAL_CONTENT,
+  };
+  return next();
+}
 
 };
 

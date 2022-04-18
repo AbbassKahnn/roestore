@@ -21,7 +21,31 @@ const Router = express.Router();
   *          200:
   *              description: Received products.
   */
-Router.get('/', [auth, Controller.getallproduct, ErrorHandler]);
+Router.get('/', [auth, Controller.getAllProduct, ErrorHandler]);
+
+
+/**
+  * @swagger
+  * /product/{product_id}:
+  *  get:
+  *      tags:
+  *          - PRODUCT
+  *      name: product
+  *      produces:
+  *          - application/json
+  *      consumes:
+  *          - application/json
+  *      summary: This should get single product with all data.
+  *      parameters:
+  *          - name: product_id
+  *            in: path
+  *            type: integer
+  *            require: true
+  *      responses:
+  *          200:
+  *              description: Received products.
+  */
+ Router.get('/:product_id', [auth, Controller.getSingleProduct, ErrorHandler]);
 
 /**
   * @swagger

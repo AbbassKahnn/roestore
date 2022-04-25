@@ -15,6 +15,10 @@ module.exports = (sequelize) => {
 			type: DataType.INTEGER,
 			allowNull: false,
 		}, 
+		quantity: {
+			type: DataType.INTEGER,
+			allowNull: false,
+		},
         shopping_status: {
 			type: DataType.INTEGER,
 			allowNull: false,

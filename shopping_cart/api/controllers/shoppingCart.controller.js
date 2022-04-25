@@ -43,7 +43,8 @@ exports.postShoppingCart = async(req,res,next) => {
     const response = new ResponseModel();
     const {
       product_id,
-      user_id
+      user_id,
+      quantity
     } = req.body;
     try {
         const postShoping_Cart = await sequelize.query(
@@ -51,11 +52,13 @@ exports.postShoppingCart = async(req,res,next) => {
             INSERT INTO e_store_cart.shopping_cart
             (
               product_id,
-              user_id 
+              user_id,
+              quantity 
             )
             values(
                 '${product_id}',
-                '${user_id}'
+                '${user_id}',
+                '${quantity}'
            )     
             `, {
                 type: QueryTypes.INSERT
@@ -87,7 +90,8 @@ exports.updateShoppingCart = async(req,res,next) => {
     const {
       shopping_cart_id,
       user_id,
-      product_id
+      product_id,
+      quantity
   } = req.body;
   try {
       const updateshopping_cart = await sequelize.query(
@@ -95,7 +99,8 @@ exports.updateShoppingCart = async(req,res,next) => {
          UPDATE e_store_cart.shopping_cart
           SET 
           product_id = '${product_id}',           
-          user_id = '${user_id}'  
+          user_id = '${user_id}',
+          quantity = '${quantity}'  
           WHERE  shopping_cart_id ='${shopping_cart_id}'
    
           `, {

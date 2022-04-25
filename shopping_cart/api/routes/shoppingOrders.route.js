@@ -46,6 +46,8 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *                        type: integer
   *                     shopping_status:
   *                        type: integer
+  *                     quantity:
+  *                        type: integer
   *      responses:
   *          '200':
   *              description: New orders are added.
@@ -75,6 +77,8 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *                     user_id:
   *                        type: integer
   *                     shopping_status:
+  *                        type: integer
+  *                     quantity:
   *                        type: integer
   *      responses:
   *          '200':

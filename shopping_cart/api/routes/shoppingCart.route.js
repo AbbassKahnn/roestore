@@ -44,6 +44,8 @@ Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
   *                        type: integer
   *                     user_id:
   *                        type: integer
+  *                     quantity:
+  *                        type: integer
   *      responses:
   *          '200':
   *              description: New product added.
@@ -73,6 +75,8 @@ Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
   *                     product_id:
   *                        type: integer
   *                     user_id:
+  *                        type: integer
+  *                     quantity:
   *                        type: integer
   *      responses:
   *          '200':

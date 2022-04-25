@@ -14,7 +14,11 @@ module.exports = (sequelize) => {
 		user_id: {
 			type: DataType.INTEGER,
 			allowNull: false,
-		},        
+		}, 
+		quantity: {
+			type: DataType.INTEGER,
+			allowNull: false,
+		},       
 		created_at: {
 			type: DataType.DATE,
 		},

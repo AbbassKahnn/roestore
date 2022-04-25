@@ -175,9 +175,9 @@ exports.updateProduct = async (req, res, next) => {
     description,
     price,
     quantity,
-    color
+    color,
+    image
   } = req.body;
-  console.log("🚀 ~ file: product.controller.js ~ line 190 ~ exports.updateProduct= ~ req", req.body)
   try {
     const updateProduct = await sequelize.query(
       `
@@ -188,8 +188,9 @@ exports.updateProduct = async (req, res, next) => {
                 description = '${description}',
                 price  =  '${price}',
                 quantity =  '${quantity}',
-                color = '${color}' 
-            where  product_id ='${product_id}'
+                color = '${color}' ,
+                image= '${image}'
+              where  product_id ='${product_id}'
      
             `, {
       type: QueryTypes.UPDATE

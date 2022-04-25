@@ -4,20 +4,18 @@ const { QueryTypes } = require("sequelize");
 const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-exports.getallshoppingorders = async(req,res,next) => {
+exports.getAllShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     try {
-    const shoppingorder = await sequelize.query(`
+    const ShoppingOrder = await sequelize.query(`
     SELECT *
     FROM shopping_orders
     `,{
         type: QueryTypes.SELECT
     });
     console.info('all records are fetched from database');
-    response.setData(shoppingorder);
+    response.setData(ShoppingOrder);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -43,23 +41,21 @@ exports.getallshoppingorders = async(req,res,next) => {
 exports.postShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        shopping_orders_id,
         shopping_cart_id,
         user_id,
         shopping_status
     } = req.body;
+    console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 49 ~ exports.postShoppingOrders=async ~ req", req)
     try {
-        const updateShoppingorders = await sequelize.query(
+        const updateshoppingorders = await sequelize.query(
             `
             INSERT INTO e_store_cart.shopping_orders
             (
-                shopping_orders_id,
                 shopping_cart_id,
                 user_id,
                 shopping_status
             )
             values(
-                '${shopping_orders_id}',
                 '${shopping_cart_id}',
                 '${user_id}',
                 '${shopping_status}'
@@ -67,9 +63,9 @@ exports.postShoppingOrders = async(req,res,next) => {
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(updateShoppingorders);
+            response.setData(updateshoppingorders);
             response.setStatus(ReasonPhrases.CREATED);
-            return res.status(StatusCodes.CREATED).send(updateShoppingorders);
+            return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
         console.log("🚀 ~ file: shoppingCart.controller.js ~ line 71 ~ exports.postShoppingcart=async ~ err", req.body)
         if (
@@ -101,9 +97,9 @@ exports.updateShoppingOrders = async(req,res,next) => {
             `
            UPDATE e_store_cart.shopping_orders
             SET            
-            shopping_cart_id ='${shopping_cart_id}',
-            user_id = '${user_id}',   
-            shopping_status = '${shopping_status}'        
+              user_id = '${user_id}',   
+              shopping_status = '${shopping_status}' 
+            WHERE  shopping_cart_id ='${shopping_cart_id}'  
      
      
             `, {
@@ -111,7 +107,7 @@ exports.updateShoppingOrders = async(req,res,next) => {
             });
             response.setData(updateshoppingorder);
             response.setStatus(ReasonPhrases.OK);
-            return res.status(StatusCodes.OK).send(updateshoppingorder);
+            return res.status(StatusCodes.OK).send(response);
     } catch (err) {
         console.log("🚀 ~ file: shoppingCart.controller.js ~ line 112 ~ exports.updateShoppingCart=async ~ err", req.body)
         if (
@@ -144,7 +140,7 @@ try {
     console.info('shopping orders  deleted successfully');
     response.setData('deleted successfully' );
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delshoppingorders);
+    return res.status(StatusCodes.OK).send(response);
 } catch (err) {
 console.log("🚀 ~ file: product.controller.js ~ line 166 ~ exports.deleteproduct ~ err", req.body)
 if (

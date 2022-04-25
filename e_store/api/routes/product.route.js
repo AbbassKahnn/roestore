@@ -1,6 +1,5 @@
 const express = require('express');
 const Controller = require('../controllers/product.controller');
-const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
 const Router = express.Router();
@@ -21,7 +20,7 @@ const Router = express.Router();
   *          200:
   *              description: Received products.
   */
-Router.get('/', [auth, Controller.getAllrPoduct, ErrorHandler]);
+Router.get('/', [ Controller.getAllProduct, ErrorHandler]);
 
 /**
   * @swagger
@@ -44,7 +43,8 @@ Router.get('/', [auth, Controller.getAllrPoduct, ErrorHandler]);
   *          200:
   *              description: Received products.
   */
- Router.get('/:product_id', [auth, Controller.getSingleProduct, ErrorHandler]);
+ Router.get('/:product_id', [ Controller.getSingleProduct, ErrorHandler]);
+
 
  
 /**
@@ -68,7 +68,7 @@ Router.get('/', [auth, Controller.getAllrPoduct, ErrorHandler]);
   *          200:
   *              description: Received products.
   */
-Router.get('/catagory/:product_catagories_id', [auth, Controller.getAllProductByCatagory, ErrorHandler]);
+Router.get('/catagory/:product_catagories_id', [ Controller.getAllProductByCatagory, ErrorHandler]);
 
 
 /**

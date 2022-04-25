@@ -1,4 +1,4 @@
- create e_store_cart
+create database e_store_cart
  
 create table e_store_cart.shopping_cart (
  shopping_cart_id BIGINT UNSIGNED not null  auto_increment primary key,

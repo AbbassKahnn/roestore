@@ -1,6 +1,5 @@
 const express = require('express');
 const Controller = require('../controllers/productImages.controller');
-const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
 const Router = express.Router();
@@ -21,7 +20,7 @@ const Router = express.Router();
   *          200:
   *              description: Received product images.
   */
-Router.get('/', [auth, Controller.getAllProductImages, ErrorHandler]);
+Router.get('/', [ Controller.getAllProductImages, ErrorHandler]);
 
 /**
   * @swagger

@@ -4,20 +4,19 @@ const { QueryTypes } = require("sequelize");
 const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.getallshoppingcartdetail = async(req,res,next) => {
+exports.getAllShoppingCartDetail = async(req,res,next) => {
     const response = new ResponseModel();
     try {
-    const shoppingcart = await sequelize.query(`
+    const ShoppingCart = await sequelize.query(`
     SELECT *
     FROM shopping_cart
     `,{
         type: QueryTypes.SELECT
     });
     console.info('all records are fetched from database');
-    response.setData(shoppingcart);
+    response.setData(ShoppingCart);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -40,35 +39,32 @@ exports.getallshoppingcartdetail = async(req,res,next) => {
 
 };
 
-exports.postShoppingcart = async(req,res,next) => {
+exports.postShoppingCart = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-      shopping_cart_id,
       product_id,
       user_id
     } = req.body;
     try {
-        const postshopingcart = await sequelize.query(
+        const postShoping_Cart = await sequelize.query(
             `
             INSERT INTO e_store_cart.shopping_cart
             (
-              shopping_cart_id,
               product_id,
               user_id 
             )
             values(
-                '${shopping_cart_id}',
                 '${product_id}',
                 '${user_id}'
            )     
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(postshopingcart);
+            response.setData(postShoping_Cart);
             response.setStatus(ReasonPhrases.CREATED);
-            return res.status(StatusCodes.CREATED).send(postshopingcart);
+            return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
-        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 71 ~ exports.postShoppingcart=async ~ err", req.body)
+        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 71 ~ exports.postShoppingcart=async ~ err", err)
         if (
           err.ValidationError ||
           err.SyntaxError ||
@@ -90,26 +86,26 @@ exports.updateShoppingCart = async(req,res,next) => {
     const response = new ResponseModel();
     const {
       shopping_cart_id,
-      product_id,
-      user_id
-    } = req.body;
-    try {
-        const updateshoppingcart = await sequelize.query(
-            `
-           UPDATE e_store_cart.shopping_cart
-            SET            
-            shopping_cart_id ='${shopping_cart_id}',
-                product_id ='${product_id}',
-                user_id = '${user_id}'        
-     
-            `, {
-                type: QueryTypes.UPDATE
-            });
-            response.setData(updateshoppingcart);
-            response.setStatus(ReasonPhrases.OK);
-            return res.status(StatusCodes.OK).send(updateshoppingcart);
+      user_id,
+      product_id
+  } = req.body;
+  try {
+      const updateshopping_cart = await sequelize.query(
+          `
+         UPDATE e_store_cart.shopping_cart
+          SET 
+          product_id = '${product_id}',           
+          user_id = '${user_id}'  
+          WHERE  shopping_cart_id ='${shopping_cart_id}'
+   
+          `, {
+              type: QueryTypes.UPDATE
+          });
+          response.setData(updateshopping_cart);
+          response.setStatus(ReasonPhrases.OK);
+          return res.status(StatusCodes.OK).send(response);
     } catch (err) {
-        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 112 ~ exports.updateShoppingCart=async ~ err", req.body)
+        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 109 ~ exports.updateShoppingCart=async ~ err", err)
         if (
           err.ValidationError ||
           err.SyntaxError ||
@@ -140,9 +136,9 @@ try {
     console.info('shopping cart  deleted successfully');
     response.setData('deleted successfully' );
     response.setStatus(ReasonPhrases.OK);
-    return res.status(StatusCodes.OK).send(delshoppingcart);
+    return res.status(StatusCodes.OK).send(response);
 } catch (err) {
-console.log("🚀 ~ file: product.controller.js ~ line 166 ~ exports.deleteproduct ~ err", err)
+console.log("🚀 ~ file: shoppingCart.controller.js ~ line 144 ~ exports.deleteShoppingCart ~ err", req.body)
 if (
   err.ValidationError ||
   err.SyntaxError ||

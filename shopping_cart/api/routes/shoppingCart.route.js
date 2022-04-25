@@ -1,6 +1,5 @@
 const express = require('express');
 const Controller = require('../controllers/shoppingCart.controller');
-const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
 const Router = express.Router();
@@ -21,7 +20,7 @@ const Router = express.Router();
   *          200:
   *              description: Received shopping cart details.
   */
-Router.get('/', [auth, Controller.getallshoppingcartdetail, ErrorHandler]);
+Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
 
 /**
   * @swagger
@@ -41,8 +40,6 @@ Router.get('/', [auth, Controller.getallshoppingcartdetail, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     shopping_cart_id:
-  *                        type: integer
   *                     product_id:
   *                        type: integer
   *                     user_id:
@@ -51,7 +48,7 @@ Router.get('/', [auth, Controller.getallshoppingcartdetail, ErrorHandler]);
   *          '200':
   *              description: New product added.
   */
- Router.post('/', [Controller.postShoppingcart, ErrorHandler]);
+ Router.post('/', [Controller.postShoppingCart, ErrorHandler]);
 
   /**
   * @swagger

@@ -5,13 +5,12 @@ const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 
-exports.getAllrPoduct = async (req, res, next) => {
+exports.getAllProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
     const product = await sequelize.query(`
-    SELECT *
+    SELECT p.*
     FROM product p
-    left join product_images pi on pi.product_id = p.product_id
     `, {
       type: QueryTypes.SELECT
     });
@@ -38,6 +37,7 @@ exports.getAllrPoduct = async (req, res, next) => {
   }
 
 };
+
 
 exports.getSingleProduct = async (req, res, next) => {
   const response = new ResponseModel();
@@ -122,23 +122,15 @@ exports.postProduct = async (req, res, next) => {
     price,
     quantity,
     color,
-    product_catagories_id
+    product_catagories_id,
+    image,
+
   } = req.body;
+  console.log("🚀 ~ file: product.controller.js ~ line 130 ~ exports.postProduct= ~ req.body", req.body)
   try {
     const postProduct = await sequelize.query(
       `
-            INSERT INTO e_commerce_store.product
-            (
-              name,
-              title,
-                description,
-                price,
-               quantity,
-               color,
-               product_catagories_id,
-               created_at,
-               updated_at
-            )
+      insert into  e_commerce_store.product (name, title , description, price, quantity, color, product_catagories_id, image)
             values(
                 '${name}',
                 '${title}',
@@ -147,9 +139,7 @@ exports.postProduct = async (req, res, next) => {
                 '${quantity}',
                 '${color}',
                 '${product_catagories_id}',
-                NOW(),
-                NOW()
-
+                '${image}'
            )     
             `, {
       type: QueryTypes.INSERT
@@ -198,8 +188,7 @@ exports.updateProduct = async (req, res, next) => {
                 description = '${description}',
                 price  =  '${price}',
                 quantity =  '${quantity}',
-                color = '${color}', 
-                NOW()
+                color = '${color}' 
             where  product_id ='${product_id}'
      
             `, {

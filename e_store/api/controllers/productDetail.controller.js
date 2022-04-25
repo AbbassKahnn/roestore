@@ -4,7 +4,6 @@ const { QueryTypes } = require("sequelize");
 const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.getAllProductDetail = async(req,res,next) => {

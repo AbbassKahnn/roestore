@@ -1,6 +1,5 @@
 const express = require('express');
 const Controller = require('../controllers/productDetail.controller');
-const auth = require('../middleware/auth');
 const ErrorHandler = require('../middleware/errorhandler');
 
 const Router = express.Router();
@@ -21,7 +20,7 @@ const Router = express.Router();
   *          200:
   *              description: Received product detail.
   */
-Router.get('/', [auth, Controller.getAllProductDetail, ErrorHandler]);
+Router.get('/', [ Controller.getAllProductDetail, ErrorHandler]);
 
 /**
   * @swagger

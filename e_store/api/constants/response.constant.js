@@ -2,7 +2,6 @@ const Config = require('../../config/index');
 
 class responseModel {
 	constructor() {	
-		this.source = undefined;		
 		this.setStatus('');
 		this.setData('');
 		this.setError('');

@@ -19,7 +19,7 @@ exports.getAllUsers = async (req, res, next) => {
       }
     );
     console.info("All records fetched from db");
-    response.setData(users);
+    response.setData(req.user);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
   } catch (err) {
@@ -137,7 +137,7 @@ exports.login = async (req, res, next) => {
           //if password compared successfully, mean users logged in. 
 		  //We will assign him a JWT token that user will use to access protected end points
            token = jwt.sign(
-            {
+            { //payload
               user_id: user[0].user_id,
               user_name: user[0].user_name,
               first_name: user[0].first_name,

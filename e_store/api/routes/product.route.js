@@ -141,6 +141,8 @@ Router.get('/catagory/:product_catagories_id', [ Controller.getAllProductByCatag
   *                        type: string
   *                     color:
   *                        type: string
+  *                     product_catagories_id:
+  *                        type: integer
   *      responses:
   *          '200':
   *              description: product updated.

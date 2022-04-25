@@ -100,7 +100,6 @@ exports.createProductCatagory = async(req,res,next) => {
             response.setStatus(ReasonPhrases.CREATED);
             return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
-        console.log("🚀 ~ file: product.controller.js ~ line 84 ~ exports.postproduct=async ~ err", err)
         if (
           err.ValidationError ||
           err.SyntaxError ||
@@ -126,6 +125,7 @@ exports.updateProductCatagory = async(req,res,next) => {
       image,
       description,
     } = req.body;
+      console.log("🚀 ~ file: productCatagories.controller.js ~ line 128 ~ exports.updateProductCatagory=async ~ product_catagories_id", product_catagories_id)
     try {
         const updateproduct = await sequelize.query(
             `
@@ -142,7 +142,6 @@ exports.updateProductCatagory = async(req,res,next) => {
             response.setStatus(ReasonPhrases.OK);
             return res.status(StatusCodes.OK).send(response);
     } catch (err) {
-    console.log("🚀 ~ file: product.controller.js ~ line 134 ~ exports.postproduct=async ~ err", err)        
         if (
           err.ValidationError ||
           err.SyntaxError ||

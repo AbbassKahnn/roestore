@@ -82,9 +82,8 @@ exports.getAllProductByCatagory = async (req, res, next) => {
   try {
     const { product_catagories_id } = req.params;
     const products = await sequelize.query(`
-  SELECT p.*, pi.product_image_id, pi.image_title, pi.image
+  SELECT p.*
   FROM product p
-   left join product_images pi on pi.product_id = p.product_id
   where p.product_catagories_id = ${product_catagories_id}
   `, {
       type: QueryTypes.SELECT
@@ -176,20 +175,24 @@ exports.updateProduct = async (req, res, next) => {
     price,
     quantity,
     color,
-    image
+    image,
+    product_catagories_id
   } = req.body;
+  console.log("🚀 ~ file: product.controller.js ~ line 180 ~ exports.updateProduct= ~ product_catagories_id", product_catagories_id)
+
   try {
     const updateProduct = await sequelize.query(
       `
            UPDATE e_commerce_store.product
             SET            
-                name ='${name}',
-                title = '${title}',
-                description = '${description}',
-                price  =  '${price}',
-                quantity =  '${quantity}',
-                color = '${color}' ,
-                image= '${image}'
+                name='${name}',
+                title='${title}',
+                description='${description}',
+                price='${price}',
+                quantity='${quantity}',
+                color='${color}' ,
+                image='${image}',
+                product_catagories_id='${parseInt(product_catagories_id)}'
               where  product_id ='${product_id}'
      
             `, {

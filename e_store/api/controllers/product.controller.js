@@ -222,7 +222,7 @@ exports.deleteProduct = async (req, res, next) => {
   try {
     const delPoduct = await sequelize.query(`
     DELETE FROM e_commerce_store.product
-    WHERE product_id = ${req.body.product_id}
+    WHERE product_id = ${req.params.product_id}
     
     `, {
       type: QueryTypes.DELETE

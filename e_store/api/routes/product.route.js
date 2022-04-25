@@ -149,7 +149,7 @@ Router.get('/catagory/:product_catagories_id', [ Controller.getAllProductByCatag
 
      /**
   * @swagger
-  * /product:
+  * /product/{product_id}:
   *  delete:
   *      tags:
   *          - PRODUCT
@@ -159,18 +159,15 @@ Router.get('/catagory/:product_catagories_id', [ Controller.getAllProductByCatag
   *      consumes:
   *          - application/json
   *      summary: This should delete the product.
-  *      requestBody:
-  *         content:
-  *            application/json:
-  *               schema:
-  *                  type: object
-  *                  properties:
-  *                     product_id:
-  *                        type: integer
+  *      parameters:
+  *          - name: product_id
+  *            in: path
+  *            type: integer
+  *            require: true
   *      responses:
   *          '200':
   *              description: product deleted.
   */
-      Router.delete('/', [Controller.deleteProduct, ErrorHandler]);
+      Router.delete('/:product_id', [Controller.deleteProduct, ErrorHandler]);
 
 module.exports = Router;

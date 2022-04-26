@@ -22,6 +22,31 @@ const Router = express.Router();
   */
 Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
 
+
+/**
+  * @swagger
+  * /shopping_orders/{user_id}:
+  *  get:
+  *      tags:
+  *          - SHOPPING_ORDERS
+  *      name: shopping_orders
+  *      produces:
+  *          - application/json
+  *      consumes:
+  *          - application/json
+  *      summary: This should get all shopping cart details.
+  *      parameters:
+  *          - name: user_id
+  *            in: path
+  *            type: integer
+  *            require: true
+  *      responses:
+  *          200:
+  *              description: Received shopping cart details.
+  */
+ Router.get('/:user_id', [Controller.getAllOrdersByUserId, ErrorHandler]);
+
+
 /**
   * @swagger
   * /shopping_orders:

@@ -4,6 +4,7 @@ const { QueryTypes } = require("sequelize");
 const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
+const Axios = require('axios');
 
 exports.getAllShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
@@ -35,6 +36,58 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     };
     return next();
   }
+
+};
+
+exports.getAllOrdersByUserId = async(req,res,next) => {
+  const response = new ResponseModel();
+  try {
+  const ShoppingOrder = await sequelize.query(`
+  SELECT *
+  FROM shopping_orders
+  where user_id = '${req.params.user_id}'
+  `,{
+      type: QueryTypes.SELECT
+  });
+  const product_ids = []
+  ShoppingOrder.map(ele =>{
+    product_ids.push(ele.product_id);
+  });
+  console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 53 ~ exports.getAllOrdersByUserId=async ~ product_ids", product_ids)
+
+  const shoppingOderArr = [];
+  
+  const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
+
+  for(let i= 0; i<product_ids.length; i++){
+    for(let j=0; j<product.data.data.length; j++){
+      if(product_ids[i] === product.data.data[j].product_id){
+        product.data.data[j].shopping_cart_id = ShoppingOrder[i].shopping_order_id;
+        shoppingOderArr.push(product.data.data[j])
+      }
+    }
+  }
+  console.info('all records are fetched from database');
+  response.setData(shoppingOderArr);
+  response.setStatus(ReasonPhrases.OK);
+  return res.status(StatusCodes.OK).send(response);
+} catch (err) {
+  console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 24 ~ exports.getallshoppingorders=async ~ err", req.body)
+  if (
+    err.ValidationError ||
+    err.SyntaxError ||
+    err.ForeignKeyConstraintError
+  ) {
+    req.body = {
+      errorKey: ErrorKey.BAD_REQUEST,
+    };
+    return next();
+  }
+  req.body = {
+    errorKey: ErrorKey.PARTIAL_CONTENT,
+  };
+  return next();
+}
 
 };
 

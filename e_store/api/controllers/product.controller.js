@@ -9,8 +9,14 @@ exports.getAllProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
     const product = await sequelize.query(`
-    SELECT p.*
+    SELECT p.*, pd.product_style,
+    pd.material,
+    pd.place_of_origin,
+    pd.model_number,
+    pd.supple_ability,
+    pd.brand_name
     FROM product p
+    left join product_detail pd on pd.product_id = p.product_id
     `, {
       type: QueryTypes.SELECT
     });
@@ -210,8 +216,14 @@ exports.postProduct = async (req, res, next) => {
     product_catagories_id,
     image,
 
+    product_style,
+        material,
+        place_of_origin,
+        model_number,
+        supple_ability,
+        brand_name
   } = req.body;
-  console.log("🚀 ~ file: product.controller.js ~ line 130 ~ exports.postProduct= ~ req.body", req.body)
+        console.log("🚀 ~ file: product.controller.js ~ line 220 ~ exports.postProduct= ~ supple_ability", supple_ability)
   try {
     const postProduct = await sequelize.query(
       `
@@ -229,6 +241,24 @@ exports.postProduct = async (req, res, next) => {
             `, {
       type: QueryTypes.INSERT
     });
+
+    const newProduct = await sequelize.query(`
+    select * from  e_commerce_store.product where name='${name}' and title='${title}'
+    `, {
+      type: QueryTypes.SELECT
+    });
+
+    const detail= await sequelize.query(
+      `
+      INSERT INTO e_commerce_store.product_detail 
+      (product_id, product_style, material, brand_name, place_of_origin, model_number, supple_ability) 
+      VALUES('${newProduct[0].product_id}', '${product_style}','${material}', '${brand_name}',
+       '${place_of_origin}', '${model_number}', '${supple_ability}');
+            `, {
+      type: QueryTypes.INSERT
+    });
+
+
     response.setData(postProduct);
     response.setStatus(ReasonPhrases.CREATED);
     return res.status(StatusCodes.CREATED).send(response);
@@ -262,12 +292,36 @@ exports.updateProduct = async (req, res, next) => {
     quantity,
     color,
     image,
-    product_catagories_id
+    product_catagories_id,
+    
+    product_style,
+        material,
+        place_of_origin,
+        model_number,
+        supple_ability,
+        brand_name
   } = req.body;
   console.log("🚀 ~ file: product.controller.js ~ line 180 ~ exports.updateProduct= ~ product_catagories_id", product_catagories_id)
 
   try {
     const updateProduct = await sequelize.query(
+      `
+           UPDATE e_commerce_store.product_detail
+            SET 
+          product_style='${product_style}',
+        material='${material}',
+        place_of_origin='${place_of_origin}',
+        model_number='${model_number}',
+        supple_ability='${supple_ability}',
+        brand_name ='${brand_name}'          
+                
+              where  product_id ='${product_id}'
+     
+            `, {
+      type: QueryTypes.UPDATE
+    });
+
+    const updateProductDetails = await sequelize.query(
       `
            UPDATE e_commerce_store.product
             SET            
@@ -284,6 +338,8 @@ exports.updateProduct = async (req, res, next) => {
             `, {
       type: QueryTypes.UPDATE
     });
+
+    
     response.setData(updateProduct);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);

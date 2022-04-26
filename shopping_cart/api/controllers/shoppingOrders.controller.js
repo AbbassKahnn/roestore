@@ -15,8 +15,25 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     `,{
         type: QueryTypes.SELECT
     });
+    const product_ids = []
+  ShoppingOrder.map(ele =>{
+    product_ids.push(ele.product_id);
+  });
+
+  const shoppingOderArr = [];
+  const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
+  for(let i= 0; i<product_ids.length; i++){
+    for(let j=0; j<product.data.data.length; j++){
+      if(product_ids[i] === product.data.data[j].product_id){
+        product.data.data[j].shopping_orders_id = ShoppingOrder[i].shopping_orders_id;
+        product.data.data[j].shopping_status= ShoppingOrder[i].shopping_status
+        product.data.data[j].orderQuantity = ShoppingOrder[i].quantity
+        shoppingOderArr.push(product.data.data[j])
+      }
+    }
+  }
     console.info('all records are fetched from database');
-    response.setData(ShoppingOrder);
+    response.setData(shoppingOderArr);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
@@ -53,12 +70,9 @@ exports.getAllOrdersByUserId = async(req,res,next) => {
   ShoppingOrder.map(ele =>{
     product_ids.push(ele.product_id);
   });
-  console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 53 ~ exports.getAllOrdersByUserId=async ~ product_ids", product_ids)
 
   const shoppingOderArr = [];
-  
   const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
-
   for(let i= 0; i<product_ids.length; i++){
     for(let j=0; j<product.data.data.length; j++){
       if(product_ids[i] === product.data.data[j].product_id){
@@ -171,8 +185,7 @@ exports.postShoppingOrders = async(req,res,next) => {
 exports.updateShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        product_id,
-        user_id,
+      shopping_orders_id,
         shopping_status,
         quantity
     } = req.body;
@@ -181,10 +194,9 @@ exports.updateShoppingOrders = async(req,res,next) => {
             `
            UPDATE e_store_cart.shopping_orders
             SET            
-              user_id = '${user_id}',   
               shopping_status = '${shopping_status}',
               quantity = '${quantity}' 
-            WHERE  product_id ='${product_id}'  
+            WHERE  shopping_orders_id ='${shopping_orders_id}'  
      
      
             `, {

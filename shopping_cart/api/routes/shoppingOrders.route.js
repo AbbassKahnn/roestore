@@ -95,9 +95,7 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     product_id:
-  *                        type: integer
-  *                     user_id:
+  *                     shopping_orders_id:
   *                        type: integer
   *                     shopping_status:
   *                        type: integer

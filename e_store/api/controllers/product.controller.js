@@ -120,6 +120,49 @@ exports.getProductsService = async (req, res, next) => {
 };
 
 
+
+
+exports.getSeachProducts = async (req, res, next) => {
+  const response = new ResponseModel();
+  try {
+    // const product_ids = JSON.parse(req.params.product_ids);
+    // console.log("🚀 ~ file: product.controller.js ~ line 86 ~ exports.getProductsService= ~ product_ids", product_ids)
+    const product = await sequelize.query(`
+  SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
+  pd.place_of_origin,pd.model_number,pd.supple_ability,
+  pc.name as cat_name, pc.image as cat_image, pc.description as cat_description
+  FROM product p 
+  join product_catagories pc on pc.product_catagories_id = p.product_catagories_id
+  left join product_detail pd on pd.product_id = p.product_id
+  where p.name like '%${req.params.slug}%' OR p.title like  '%${req.params.slug}%'
+  `, {
+      type: QueryTypes.SELECT
+    });
+    console.info('all records are fetched from database');
+    response.setData(product);
+    response.setStatus(ReasonPhrases.OK);
+    return res.status(StatusCodes.OK).send(response);
+  } catch (err) {
+    console.error(`Get all user error! ${err}`);
+    if (
+      err.ValidationError ||
+      err.SyntaxError ||
+      err.ForeignKeyConstraintError
+    ) {
+      req.body = {
+        errorKey: ErrorKey.BAD_REQUEST,
+      };
+      return next();
+    }
+    req.body = {
+      errorKey: ErrorKey.PARTIAL_CONTENT,
+    };
+    return next();
+  }
+
+};
+
+
 exports.getAllProductByCatagory = async (req, res, next) => {
   const response = new ResponseModel();
   try {

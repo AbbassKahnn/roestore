@@ -43,27 +43,33 @@ exports.postShoppingCart = async(req,res,next) => {
     const response = new ResponseModel();
     const {
       product_id,
-      user_id,
-      quantity
+      user_id
     } = req.body;
     try {
-        const postShoping_Cart = await sequelize.query(
+
+      let cart = await sequelize.query(`
+      select * from e_store_cart.shopping_cart 
+      where product_id= '${product_id}' and user_id = '${user_id}'
+      `, {
+        type: QueryTypes.SELECT
+    });
+    if(cart.length <= 0){
+         cart = await sequelize.query(
             `
             INSERT INTO e_store_cart.shopping_cart
             (
               product_id,
-              user_id,
-              quantity 
+              user_id
             )
             values(
                 '${product_id}',
-                '${user_id}',
-                '${quantity}'
-           )     
+                '${user_id}'
+              )     
             `, {
                 type: QueryTypes.INSERT
             });
-            response.setData(postShoping_Cart);
+          }
+            response.setData(cart);
             response.setStatus(ReasonPhrases.CREATED);
             return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
@@ -90,17 +96,15 @@ exports.updateShoppingCart = async(req,res,next) => {
     const {
       shopping_cart_id,
       user_id,
-      product_id,
-      quantity
-  } = req.body;
+      product_id
+      } = req.body;
   try {
       const updateshopping_cart = await sequelize.query(
           `
          UPDATE e_store_cart.shopping_cart
           SET 
           product_id = '${product_id}',           
-          user_id = '${user_id}',
-          quantity = '${quantity}'  
+          user_id = '${user_id}' 
           WHERE  shopping_cart_id ='${shopping_cart_id}'
    
           `, {

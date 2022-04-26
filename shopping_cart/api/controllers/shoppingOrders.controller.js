@@ -41,32 +41,51 @@ exports.getAllShoppingOrders = async(req,res,next) => {
 exports.postShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        shopping_cart_id,
+        product_id,
         user_id,
-        shopping_status,
         quantity
     } = req.body;
-    console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 49 ~ exports.postShoppingOrders=async ~ req", req)
     try {
-        const updateshoppingorders = await sequelize.query(
-            `
-            INSERT INTO e_store_cart.shopping_orders
-            (
-                shopping_cart_id,
-                user_id,
-                shopping_status,
-                quantity
-            )
-            values(
-                '${shopping_cart_id}',
-                '${user_id}',
-                '${shopping_status}',
-                '${quantity}'
-           )     
-            `, {
-                type: QueryTypes.INSERT
-            });
-            response.setData(updateshoppingorders);
+
+      const checkOrder = await sequelize.query(`
+      select * from e_store_cart.shopping_orders 
+      where product_id= '${product_id}' and user_id = '${user_id}'
+      `,{
+        type: QueryTypes.SELECT
+    }) ;
+
+      let order;
+      if(checkOrder.length > 0){
+        order= await sequelize.query(
+          `
+         UPDATE e_store_cart.shopping_orders
+          SET            
+            quantity = '${quantity}' 
+          WHERE  product_id ='${product_id}' and  user_id = '${user_id}'  
+          `, {
+              type: QueryTypes.UPDATE
+          });
+      } else {
+         order = await sequelize.query(
+          `
+          INSERT INTO e_store_cart.shopping_orders
+          (
+              product_id,
+              user_id,
+              quantity
+          )
+          values(
+              '${product_id}',
+              '${user_id}',
+              '${quantity}'
+         )     
+          `, {
+              type: QueryTypes.INSERT
+          });
+      }
+
+        
+            response.setData(checkOrder);
             response.setStatus(ReasonPhrases.CREATED);
             return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
@@ -91,7 +110,7 @@ exports.postShoppingOrders = async(req,res,next) => {
 exports.updateShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
-        shopping_cart_id,
+        product_id,
         user_id,
         shopping_status,
         quantity
@@ -104,7 +123,7 @@ exports.updateShoppingOrders = async(req,res,next) => {
               user_id = '${user_id}',   
               shopping_status = '${shopping_status}',
               quantity = '${quantity}' 
-            WHERE  shopping_cart_id ='${shopping_cart_id}'  
+            WHERE  product_id ='${product_id}'  
      
      
             `, {
@@ -137,7 +156,7 @@ exports.deleteShoppingOrders= async(req,res, next)=> {
 try {
     const delshoppingorders =  await sequelize.query(`
     DELETE FROM e_store_cart.shopping_orders
-    WHERE shopping_cart_id = ${req.body.shopping_cart_id}
+    WHERE product_id = ${req.body.product_id}
     
     `,{ 
         type: QueryTypes.DELETE

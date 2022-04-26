@@ -44,9 +44,11 @@ exports.getSingleProduct = async (req, res, next) => {
   try {
     const { product_id } = req.params;
     const product = await sequelize.query(`
-  SELECT *
+  SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
+  pd.place_of_origin,pd.model_number,pd.supple_ability,
+  pc.name as cat_name, pc.image as cat_image, pc.description as cat_description
   FROM product p 
-  left join product_images pi on pi.product_id = p.product_id
+  join product_catagories pc on pc.product_catagories_id = p.product_catagories_id
   left join product_detail pd on pd.product_id = p.product_id
   where p.product_id = ${product_id}
   `, {

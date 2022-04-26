@@ -40,11 +40,9 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     shopping_cart_id:
+  *                     product_id:
   *                        type: integer
   *                     user_id:
-  *                        type: integer
-  *                     shopping_status:
   *                        type: integer
   *                     quantity:
   *                        type: integer
@@ -72,7 +70,7 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *               schema:
   *                  type: object
   *                  properties:
-  *                     shopping_cart_id:
+  *                     product_id:
   *                        type: integer
   *                     user_id:
   *                        type: integer
@@ -98,14 +96,6 @@ Router.get('/', [Controller.getAllShoppingOrders, ErrorHandler]);
   *      consumes:
   *          - application/json
   *      summary: This should delete the product.
-  *      requestBody:
-  *         content:
-  *            application/json:
-  *               schema:
-  *                  type: object
-  *                  properties:
-  *                     shopping_cart_id:
-  *                        type: integer
   *      responses:
   *          '200':
   *              description: product deleted.

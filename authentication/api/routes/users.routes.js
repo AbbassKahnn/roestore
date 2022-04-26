@@ -20,7 +20,7 @@ const Router = express.Router();
   *          200:
   *              description: Received users.
   */
-Router.get('/', [ Controller.getAllUsers, ErrorHandler]);
+Router.get('/:user_ids', [ Controller.getAllUsers, ErrorHandler]);
 
 /**
   * @swagger

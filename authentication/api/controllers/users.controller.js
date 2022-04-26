@@ -12,14 +12,14 @@ exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await sequelize.query(
       `
-		select * from users
+		select * from users where user_id IN (${req.params.user_ids})
 		`,
       {
         type: QueryTypes.SELECT,
       }
     );
     console.info("All records fetched from db");
-    response.setData(req.user);
+    response.setData(users);
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
   } catch (err) {

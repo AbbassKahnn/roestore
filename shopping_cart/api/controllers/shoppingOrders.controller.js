@@ -15,11 +15,14 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     `,{
         type: QueryTypes.SELECT
     });
-    const product_ids = []
+    const product_ids = [];
+    const user_ids= [];
   ShoppingOrder.map(ele =>{
     product_ids.push(ele.product_id);
+    user_ids.push(ele.user_id);
   });
 
+  const user = await Axios.get(`http://localhost:5000/users/${user_ids}`);
   const shoppingOderArr = [];
   const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
   for(let i= 0; i<product_ids.length; i++){
@@ -28,7 +31,17 @@ exports.getAllShoppingOrders = async(req,res,next) => {
         product.data.data[j].shopping_orders_id = ShoppingOrder[i].shopping_orders_id;
         product.data.data[j].shopping_status= ShoppingOrder[i].shopping_status
         product.data.data[j].orderQuantity = ShoppingOrder[i].quantity
+        product.data.data[j].user_id = ShoppingOrder[i].user_id
         shoppingOderArr.push(product.data.data[j])
+      }
+    }
+  }
+
+  for(let i=0; i<shoppingOderArr.length; i++){
+    for(let j=0; j<user.data.data.length; j++){
+      if(shoppingOderArr[i].user_id === user.data.data[j].user_id){
+        delete user.data.data[j].password;
+        shoppingOderArr[i].user = user.data.data[j]
       }
     }
   }

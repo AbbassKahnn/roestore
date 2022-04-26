@@ -22,6 +22,30 @@ const Router = express.Router();
   */
 Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
 
+
+/**
+  * @swagger
+  * /shopping_cart/{user_id}:
+  *  get:
+  *      tags:
+  *          - SHOPPING_CART
+  *      name: shopping_cart
+  *      produces:
+  *          - application/json
+  *      consumes:
+  *          - application/json
+  *      summary: This should get all shopping cart details.
+  *      parameters:
+  *          - name: user_id
+  *            in: path
+  *            type: integer
+  *            require: true
+  *      responses:
+  *          200:
+  *              description: Received shopping cart details.
+  */
+ Router.get('/:user_id', [Controller.getAllShoppingCartByUserId, ErrorHandler]);
+
 /**
   * @swagger
   * /shopping_cart:
@@ -83,7 +107,7 @@ Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
 
      /**
   * @swagger
-  * /shopping_cart:
+  * /shopping_cart/{id}:
   *  delete:
   *      tags:
   *          - SHOPPING_CART
@@ -93,18 +117,15 @@ Router.get('/', [Controller.getAllShoppingCartDetail, ErrorHandler]);
   *      consumes:
   *          - application/json
   *      summary: This should delete the product.
-  *      requestBody:
-  *         content:
-  *            application/json:
-  *               schema:
-  *                  type: object
-  *                  properties:
-  *                     shopping_cart_id:
-  *                        type: integer
+  *      parameters:
+  *          - name: id
+  *            in: path
+  *            type: integer
+  *            require: true
   *      responses:
   *          '200':
   *              description: product deleted.
   */
-      Router.delete('/', [Controller.deleteShoppingCart, ErrorHandler]);
+  Router.delete('/:id', [Controller.deleteShoppingCart, ErrorHandler]);
 
 module.exports = Router;

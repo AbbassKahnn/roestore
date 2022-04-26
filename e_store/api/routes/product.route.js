@@ -46,6 +46,29 @@ Router.get('/', [ Controller.getAllProduct, ErrorHandler]);
  Router.get('/:product_id', [ Controller.getSingleProduct, ErrorHandler]);
 
 
+/**
+  * @swagger
+  * /product/service/{product_ids}:
+  *  get:
+  *      tags:
+  *          - PRODUCT
+  *      name: product
+  *      produces:
+  *          - application/json
+  *      consumes:
+  *          - application/json
+  *      summary: This should get single product with all data.
+  *      parameters:
+  *          - name: product_ids
+  *            in: path
+  *            type: integer
+  *            require: true
+  *      responses:
+  *          200:
+  *              description: Received products.
+  */
+ Router.get('/service/:product_ids', [ Controller.getProductsService, ErrorHandler]);
+
  
 /**
   * @swagger

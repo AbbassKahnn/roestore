@@ -65,6 +65,7 @@ exports.postShoppingOrders = async(req,res,next) => {
           `, {
               type: QueryTypes.UPDATE
           });
+          
       } else {
          order = await sequelize.query(
           `
@@ -83,6 +84,13 @@ exports.postShoppingOrders = async(req,res,next) => {
               type: QueryTypes.INSERT
           });
       }
+      await sequelize.query(`
+          DELETE FROM e_store_cart.shopping_cart
+          WHERE product_id = ${product_id} and user_id = ${user_id}
+          
+          `,{ 
+              type: QueryTypes.DELETE
+          });
 
         
             response.setData(checkOrder);
@@ -155,7 +163,7 @@ exports.deleteShoppingOrders= async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delshoppingorders =  await sequelize.query(`
-    DELETE FROM e_store_cart.shopping_orders
+    DELETE FROM shopping_orders
     WHERE product_id = ${req.body.product_id}
     
     `,{ 

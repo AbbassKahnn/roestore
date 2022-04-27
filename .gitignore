@@ -1,11 +1,14 @@
 
 # dependencies
-/authentication/node_modules
-/e_store/node_modules
+
+/userService/node_modules
+/order_cartService/node_modules
+/productService/node_modules
 
 # production
-/authentication/build
-/e_store/build
+/userService/build
+/order_cartService/build
+/productService/build
 
 # environment variables
 .env

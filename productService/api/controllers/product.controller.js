@@ -5,6 +5,10 @@ const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 
+/**
+ * Get all products from database. 
+ * @returns all products.
+ */
 exports.getAllProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -44,7 +48,11 @@ exports.getAllProduct = async (req, res, next) => {
 
 };
 
-
+/**
+ * Get single product from database by product id (product id received from req params)
+ * and product quantity must greater then 0.
+ * @returns single product.
+ */
 exports.getSingleProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -84,12 +92,15 @@ exports.getSingleProduct = async (req, res, next) => {
 
 };
 
-
+/**
+ * This function is use for micro service to get all product from database by product id
+ * and product ids received as array in the req params.
+ * This function called from order_cartService.
+ * @returns match products
+ */
 exports.getProductsService = async (req, res, next) => {
   const response = new ResponseModel();
   try {
-    // const product_ids = JSON.parse(req.params.product_ids);
-    // console.log("🚀 ~ file: product.controller.js ~ line 86 ~ exports.getProductsService= ~ product_ids", product_ids)
     const product = await sequelize.query(`
   SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
   pd.place_of_origin,pd.model_number,pd.supple_ability,
@@ -125,15 +136,15 @@ exports.getProductsService = async (req, res, next) => {
 
 };
 
-
-
-
+/**
+ * Get all product from database where product name and title matched
+ * product slug received from req params. 
+ * @returns searched products.
+ */
 exports.getSeachProducts = async (req, res, next) => {
   const response = new ResponseModel();
   try {
-    // const product_ids = JSON.parse(req.params.product_ids);
-    // console.log("🚀 ~ file: product.controller.js ~ line 86 ~ exports.getProductsService= ~ product_ids", product_ids)
-    const product = await sequelize.query(`
+     const product = await sequelize.query(`
   SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
   pd.place_of_origin,pd.model_number,pd.supple_ability,
   pc.name as cat_name, pc.image as cat_image, pc.description as cat_description
@@ -168,7 +179,11 @@ exports.getSeachProducts = async (req, res, next) => {
 
 };
 
-
+/**
+ * This fucntion get all product from database where catagory id match in the product
+ * Catagory id receive from req params.
+ * @returns 
+ */
 exports.getAllProductByCatagory = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -204,6 +219,12 @@ exports.getAllProductByCatagory = async (req, res, next) => {
 
 };
 
+/**
+ * This fucntion create new product in the database product table and 
+ * product detail created in product detail table and
+ * product information received from req body.
+ * @returns created 
+ */
 exports.postProduct = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -281,6 +302,12 @@ exports.postProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * This fucntion update the product in the database by product id product table and 
+ * product detail created in product detail table and
+ * product information received from req body.
+ * @returns created 
+ */
 exports.updateProduct = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -320,7 +347,7 @@ exports.updateProduct = async (req, res, next) => {
       type: QueryTypes.UPDATE
     });
 
-    const updateProductDetails = await sequelize.query(
+    await sequelize.query(
       `
            UPDATE e_commerce_store.product
             SET            
@@ -361,7 +388,14 @@ exports.updateProduct = async (req, res, next) => {
   }
 };
 
-
+/**
+ * This fucntion update the product quatity in the database by product id in product table and 
+ * product id received from req params and quantity received in body.
+ * The function is used as a micro service called from order_cartService
+ * When user create order this function is called from order_cartService,
+ * substract the order quantity from the product quantity and update the product quantity.
+ * @returns created 
+ */
 exports.updateQuantity = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -370,7 +404,6 @@ exports.updateQuantity = async (req, res, next) => {
 
   try {
    
-
     const updateProductDetails = await sequelize.query(
       `
            UPDATE e_commerce_store.product
@@ -405,6 +438,10 @@ exports.updateQuantity = async (req, res, next) => {
   }
 };
 
+/**
+ * This fuction delete the product from database (product table) by product id (req params)
+ * @returns 
+ */
 exports.deleteProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {

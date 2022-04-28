@@ -20,7 +20,6 @@ exports.getAllProductDetail = async(req,res,next) => {
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
-    console.log("🚀 ~ file: productDetail.controller.js ~ line 24 ~ exports.getallproductDetail=async ~ err", err)
     if (
       err.ValidationError ||
       err.SyntaxError ||
@@ -40,7 +39,6 @@ exports.getAllProductDetail = async(req,res,next) => {
 };
 
 exports.postProductDetail = async(req,res,next) => {
-    console.log("🚀 ~ file: productDetail.controller.js ~ line 44 ~ exports.postproductDetail=async ~ req", req.body)
     const response = new ResponseModel();
     const {
         product_id,

@@ -6,6 +6,12 @@ const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 const Axios = require('axios');
 
+/**
+ * This function is uses for micro service to get all orders from database for admin
+ * This function call another two services which get all product from the productService app by product ids
+ * and users from userService by user ids.
+ * @returns all orders.
+ */
 exports.getAllShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     try {
@@ -15,17 +21,22 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     `,{
         type: QueryTypes.SELECT
     });
+
+    // created product ids and user ids array.
     const product_ids = [];
     const user_ids= [];
   ShoppingOrder.map(ele =>{
     product_ids.push(ele.product_id);
     user_ids.push(ele.user_id);
   });
-
+  // user service calling with user ids in req params
   const user = await Axios.get(`http://localhost:5000/users/${user_ids}`);
-  const shoppingOderArr = [];
+  // product service calling wiht product ids in req prams.
   const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
-
+ 
+  //Bind product with order by matching product (product id) with orders (product id) and
+	// push product object with order detail in shoppingOderArr.
+  const shoppingOderArr = [];
   for(let i= 0; i < product_ids.length; i++){
     for(let j=0; j < product.data.data.length; j++){
       if(product_ids[i] === product.data.data[j].product_id){
@@ -38,6 +49,8 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     }
   }
 
+  //Bind shoppingOderArr with user by matching user (user id) with shoppingOderArr (user id) and
+	// create new user object in shoppingOderArr matched index.
   for(let i=0; i<shoppingOderArr.length; i++){
     for(let j=0; j<user.data.data.length; j++){
       if(shoppingOderArr[i].user_id === user.data.data[j].user_id){
@@ -51,7 +64,6 @@ exports.getAllShoppingOrders = async(req,res,next) => {
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
-    console.log("🚀 ~ file: shoppingOrders.controller.js ~ line 24 ~ exports.getallshoppingorders=async ~ err", req.body)
     if (
       err.ValidationError ||
       err.SyntaxError ||
@@ -70,6 +82,11 @@ exports.getAllShoppingOrders = async(req,res,next) => {
 
 };
 
+/**
+ * This function is uses for micro service to get all orders from database for user
+ * This function call another service which get all product from the productService app by product ids.
+ * @returns all my orders.
+ */
 exports.getAllOrdersByUserId = async(req,res,next) => {
   const response = new ResponseModel();
   try {
@@ -86,7 +103,11 @@ exports.getAllOrdersByUserId = async(req,res,next) => {
   });
 
   const shoppingOderArr = [];
+    // product service calling wiht product ids in req prams.
   const product = await Axios.get(`http://localhost:5001/product/service/${product_ids}`);
+
+  //Bind product with order by matching product (product id) with orders (product id) and
+	// push product object with order detail in shoppingOderArr.
   for(let i= 0; i<product_ids.length; i++){
     for(let j=0; j<product.data.data.length; j++){
       if(product_ids[i] === product.data.data[j].product_id){
@@ -120,6 +141,12 @@ exports.getAllOrdersByUserId = async(req,res,next) => {
 
 };
 
+/**
+ * This function is uses for micro service to create orders ind database for user
+ * This function call another two services which upadate the product quantity 
+ * from the productService app by product id
+ * @returns created.
+ */
 exports.postShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
@@ -128,7 +155,7 @@ exports.postShoppingOrders = async(req,res,next) => {
         quantity
     } = req.body;
     try {
-
+    // first check if order already created.
       const checkOrder = await sequelize.query(`
       select * from e_store_cart.shopping_orders 
       where product_id= '${product_id}' and user_id = '${user_id}'
@@ -137,6 +164,7 @@ exports.postShoppingOrders = async(req,res,next) => {
     }) ;
 
       let order;
+      // check if order already created then update order else create new order
       if(checkOrder.length > 0){
         order= await sequelize.query(
           `
@@ -166,6 +194,7 @@ exports.postShoppingOrders = async(req,res,next) => {
               type: QueryTypes.INSERT
           });
       }
+      // delete product from shopping cart if exist.
       await sequelize.query(`
           DELETE FROM e_store_cart.shopping_cart
           WHERE product_id = ${product_id} and user_id = ${user_id}
@@ -173,13 +202,12 @@ exports.postShoppingOrders = async(req,res,next) => {
           `,{ 
               type: QueryTypes.DELETE
           });
-
+// product service call to update product quantity in product service .
         await Axios.patch(`http://localhost:5001/product/${product_id}`, {quantity: quantity} )
             response.setData(checkOrder);
             response.setStatus(ReasonPhrases.CREATED);
             return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
-        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 71 ~ exports.postShoppingcart=async ~ err", req.body)
         if (
           err.ValidationError ||
           err.SyntaxError ||
@@ -197,6 +225,7 @@ exports.postShoppingOrders = async(req,res,next) => {
       }
 };
 
+// update my order.
 exports.updateShoppingOrders = async(req,res,next) => {
     const response = new ResponseModel();
     const {
@@ -212,8 +241,6 @@ exports.updateShoppingOrders = async(req,res,next) => {
               shopping_status = '${shopping_status}',
               quantity = '${quantity}' 
             WHERE  shopping_orders_id ='${shopping_orders_id}'  
-     
-     
             `, {
                 type: QueryTypes.UPDATE
             });
@@ -221,7 +248,6 @@ exports.updateShoppingOrders = async(req,res,next) => {
             response.setStatus(ReasonPhrases.OK);
             return res.status(StatusCodes.OK).send(response);
     } catch (err) {
-        console.log("🚀 ~ file: shoppingCart.controller.js ~ line 112 ~ exports.updateShoppingCart=async ~ err", req.body)
         if (
           err.ValidationError ||
           err.SyntaxError ||
@@ -239,6 +265,7 @@ exports.updateShoppingOrders = async(req,res,next) => {
       }
 };
 
+// delete my order.
 exports.deleteShoppingOrders= async(req,res, next)=> {
     const response = new ResponseModel();
 try {

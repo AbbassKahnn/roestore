@@ -5,6 +5,7 @@ const Config = require('../../config');
 
 const dbConfig = Config.dbconfig;
 const { applySequelizeSetup } = require('./extra-setup');
+// create data base connectionn
 
 const sequelize = new Sequelize(
 	process.env.DB,

@@ -6,7 +6,7 @@ const Router = express.Router();
 
 /**
   * @swagger
-  * /users:
+  * /users/{user_ids}: 
   *  get:
   *      tags:
   *          - USERS
@@ -16,6 +16,11 @@ const Router = express.Router();
   *      consumes:
   *          - application/json
   *      summary: This should get all users.
+  *      parameters:
+  *          - name: user_ids
+  *            in: path
+  *            type: integer
+  *            require: true
   *      responses:
   *          200:
   *              description: Received users.

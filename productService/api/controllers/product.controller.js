@@ -5,6 +5,10 @@ const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 
+/**
+ * Get all products from database. 
+ * @returns all products.
+ */
 exports.getAllProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -44,7 +48,11 @@ exports.getAllProduct = async (req, res, next) => {
 
 };
 
-
+/**
+ * Get single product from database by product id (product id received from req params)
+ * and product quantity must greater then 0.
+ * @returns single product.
+ */
 exports.getSingleProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -84,12 +92,15 @@ exports.getSingleProduct = async (req, res, next) => {
 
 };
 
-
+/**
+ * This function is use for micro service to get all product from database by product id
+ * and product ids received as array in the req params.
+ * This function called from order_cartService.
+ * @returns match products
+ */
 exports.getProductsService = async (req, res, next) => {
   const response = new ResponseModel();
   try {
-    // const product_ids = JSON.parse(req.params.product_ids);
-    // console.log("🚀 ~ file: product.controller.js ~ line 86 ~ exports.getProductsService= ~ product_ids", product_ids)
     const product = await sequelize.query(`
   SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
   pd.place_of_origin,pd.model_number,pd.supple_ability,
@@ -125,15 +136,15 @@ exports.getProductsService = async (req, res, next) => {
 
 };
 
-
-
-
+/**
+ * Get all product from database where product name and title matched
+ * product slug received from req params. 
+ * @returns searched products.
+ */
 exports.getSeachProducts = async (req, res, next) => {
   const response = new ResponseModel();
   try {
-    // const product_ids = JSON.parse(req.params.product_ids);
-    // console.log("🚀 ~ file: product.controller.js ~ line 86 ~ exports.getProductsService= ~ product_ids", product_ids)
-    const product = await sequelize.query(`
+     const product = await sequelize.query(`
   SELECT p.*, pd.product_detail_id, pd.product_style,pd.material,pd.brand_name,
   pd.place_of_origin,pd.model_number,pd.supple_ability,
   pc.name as cat_name, pc.image as cat_image, pc.description as cat_description
@@ -168,7 +179,11 @@ exports.getSeachProducts = async (req, res, next) => {
 
 };
 
-
+/**
+ * This fucntion get all product from database where catagory id match in the product
+ * Catagory id receive from req params.
+ * @returns 
+ */
 exports.getAllProductByCatagory = async (req, res, next) => {
   const response = new ResponseModel();
   try {
@@ -204,6 +219,12 @@ exports.getAllProductByCatagory = async (req, res, next) => {
 
 };
 
+/**
+ * This fucntion create new product in the database product table and 
+ * product detail created in product detail table and
+ * product information received from req body.
+ * @returns created 
+ */
 exports.postProduct = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -227,7 +248,7 @@ exports.postProduct = async (req, res, next) => {
   try {
     const postProduct = await sequelize.query(
       `
-      insert into  e_commerce_product.product (name, title , description, price, quantity, color, product_catagories_id, image)
+      insert into  e_commerce_users_store.product (name, title , description, price, quantity, color, product_catagories_id, image)
             values(
                 '${name}',
                 '${title}',
@@ -243,14 +264,14 @@ exports.postProduct = async (req, res, next) => {
     });
 
     const newProduct = await sequelize.query(`
-    select * from  e_commerce_product.product where name='${name}' and title='${title}'
+    select * from  e_commerce_users_store.product where name='${name}' and title='${title}'
     `, {
       type: QueryTypes.SELECT
     });
 
     const detail= await sequelize.query(
       `
-      INSERT INTO e_commerce_product.product_detail 
+      INSERT INTO e_commerce_users_store.product_detail 
       (product_id, product_style, material, brand_name, place_of_origin, model_number, supple_ability) 
       VALUES('${newProduct[0].product_id}', '${product_style}','${material}', '${brand_name}',
        '${place_of_origin}', '${model_number}', '${supple_ability}');
@@ -281,6 +302,12 @@ exports.postProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * This fucntion update the product in the database by product id product table and 
+ * product detail created in product detail table and
+ * product information received from req body.
+ * @returns created 
+ */
 exports.updateProduct = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -305,7 +332,7 @@ exports.updateProduct = async (req, res, next) => {
   try {
     const updateProduct = await sequelize.query(
       `
-           UPDATE e_commerce_product.product_detail
+           UPDATE e_commerce_users_store.product_detail
             SET 
           product_style='${product_style}',
         material='${material}',
@@ -320,9 +347,9 @@ exports.updateProduct = async (req, res, next) => {
       type: QueryTypes.UPDATE
     });
 
-    const updateProductDetails = await sequelize.query(
+    await sequelize.query(
       `
-           UPDATE e_commerce_product.product
+           UPDATE e_commerce_users_store.product
             SET            
                 name='${name}',
                 title='${title}',
@@ -361,7 +388,14 @@ exports.updateProduct = async (req, res, next) => {
   }
 };
 
-
+/**
+ * This fucntion update the product quatity in the database by product id in product table and 
+ * product id received from req params and quantity received in body.
+ * The function is used as a micro service called from order_cartService
+ * When user create order this function is called from order_cartService,
+ * substract the order quantity from the product quantity and update the product quantity.
+ * @returns created 
+ */
 exports.updateQuantity = async (req, res, next) => {
   const response = new ResponseModel();
   const {
@@ -370,10 +404,9 @@ exports.updateQuantity = async (req, res, next) => {
 
   try {
    
-
     const updateProductDetails = await sequelize.query(
       `
-           UPDATE e_commerce_product.product
+           UPDATE e_commerce_users_store.product
             SET            
                 quantity=quantity - '${quantity}' 
               where  product_id ='${req.params.product_id}'
@@ -405,11 +438,15 @@ exports.updateQuantity = async (req, res, next) => {
   }
 };
 
+/**
+ * This fuction delete the product from database (product table) by product id (req params)
+ * @returns 
+ */
 exports.deleteProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
     const delPoduct = await sequelize.query(`
-    DELETE FROM e_commerce_product.product
+    DELETE FROM e_commerce_users_store.product
     WHERE product_id = ${req.params.product_id}
     
     `, {

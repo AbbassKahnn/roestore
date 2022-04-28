@@ -20,7 +20,6 @@ exports.getAllProductDetail = async(req,res,next) => {
     response.setStatus(ReasonPhrases.OK);
     return res.status(StatusCodes.OK).send(response);
 } catch (err) {
-    console.log("🚀 ~ file: productDetail.controller.js ~ line 24 ~ exports.getallproductDetail=async ~ err", err)
     if (
       err.ValidationError ||
       err.SyntaxError ||
@@ -40,7 +39,6 @@ exports.getAllProductDetail = async(req,res,next) => {
 };
 
 exports.postProductDetail = async(req,res,next) => {
-    console.log("🚀 ~ file: productDetail.controller.js ~ line 44 ~ exports.postproductDetail=async ~ req", req.body)
     const response = new ResponseModel();
     const {
         product_id,
@@ -54,7 +52,7 @@ exports.postProductDetail = async(req,res,next) => {
     try {
         const postProdetail = await sequelize.query(
             `
-            INSERT INTO e_commerce_product.product_detail
+            INSERT INTO e_commerce_users_store.product_detail
             (
                 product_id,
                 product_style,
@@ -112,7 +110,7 @@ exports.updateProductDetail = async(req,res,next) => {
     try {
         const updateProeDtail = await sequelize.query(
             `
-           UPDATE e_commerce_product.product_detail
+           UPDATE e_commerce_users_store.product_detail
             SET 
             product_style ='${product_style}',
             material ='${material}',
@@ -151,7 +149,7 @@ exports.deleteProductDetail = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delProDetail =  await sequelize.query(`
-    DELETE FROM e_commerce_product.product_detail
+    DELETE FROM e_commerce_users_store.product_detail
     WHERE product_id = ${req.body.product_detail_id}
     
     `,{ 

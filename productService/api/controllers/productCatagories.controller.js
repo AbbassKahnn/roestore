@@ -5,6 +5,10 @@ const ErrorKey = require("../constants/errorKeys");
 const ResponseModel = require("../constants/response.constant");
 const sequelize = require("../sequelize");
 
+/**
+ * Get all catagories from database. 
+ * @returns all catagories.
+ */
 exports.getAllCatagories = async(req,res,next) => {
     const response = new ResponseModel();
     try {
@@ -38,6 +42,10 @@ exports.getAllCatagories = async(req,res,next) => {
 
 };
 
+/**
+ * Get single catagory from database by catagory id (catagory id received from req params)
+ * @returns single catagory.
+ */
 exports.getSingleProductCatagory = async(req,res,next) => {
   const response = new ResponseModel();
   try {
@@ -72,6 +80,11 @@ exports.getSingleProductCatagory = async(req,res,next) => {
 }
 };
 
+/**
+ * This fucntion create new catagory in the database catagory table and 
+ * catagory information received from req body.
+ * @returns created 
+ */
 exports.createProductCatagory = async(req,res,next) => {
     const response = new ResponseModel();
     const {
@@ -82,7 +95,7 @@ exports.createProductCatagory = async(req,res,next) => {
     try {
         const create = await sequelize.query(
             `
-            INSERT INTO e_commerce_product.product_catagories
+            INSERT INTO e_commerce_users_store.product_catagories
             (
                 name,
                 image,
@@ -117,6 +130,11 @@ exports.createProductCatagory = async(req,res,next) => {
       }
 };
 
+/**
+ * This fucntion update catagory in the database catagory table and 
+ * catagory information received from req body.
+ * @returns created 
+ */
 exports.updateProductCatagory = async(req,res,next) => {
     const response = new ResponseModel();
     const {
@@ -129,7 +147,7 @@ exports.updateProductCatagory = async(req,res,next) => {
     try {
         const updateproduct = await sequelize.query(
             `
-           UPDATE e_commerce_product.product_catagories
+           UPDATE e_commerce_users_store.product_catagories
             SET            
                 name ='${name}',
                 image = '${image}',
@@ -159,11 +177,16 @@ exports.updateProductCatagory = async(req,res,next) => {
       }
 };
 
+
+/**
+ * This fuction delete the catagory from database (catagory table) by catagory id (catagory id in req params)
+ * @returns deleted.
+ */
 exports.deleteProductCatagory = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delproduct =  await sequelize.query(`
-    DELETE FROM e_commerce_product.product_catagories
+    DELETE FROM e_commerce_users_store.product_catagories
     WHERE product_catagories_id = ${req.params.product_catagories_id}
     
     `,{ 

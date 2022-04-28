@@ -1,4 +1,4 @@
-create table e_commerce_product.product_catagories (
+create table e_commerce_users_store.product_catagories (
  product_catagories_id BIGINT UNSIGNED not null  auto_increment primary key,
  name VARCHAR(255) not null,
  image longtext,
@@ -8,7 +8,7 @@ create table e_commerce_product.product_catagories (
  deleted_at TIMESTAMP
  );
 
-create table e_commerce_product.product (
+create table e_commerce_users_store.product (
 product_id BIGINT UNSIGNED not null  auto_increment primary key,
 name VARCHAR(100) NOT NULL,
 title VARCHAR(30) NOT NULL,
@@ -23,7 +23,7 @@ deleted_at TIMESTAMP,
 foreign key (product_catagories_id) references product_catagories(product_catagories_id)
 );
  
-create table e_commerce_product.product_detail (
+create table e_commerce_users_store.product_detail (
 product_detail_id BIGINT UNSIGNED not null  auto_increment primary key,
 product_id BIGINT UNSIGNED NOT NULL,
 product_style VARCHAR(30) NOT NULL,

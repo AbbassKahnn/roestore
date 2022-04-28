@@ -82,7 +82,7 @@ exports.createProductCatagory = async(req,res,next) => {
     try {
         const create = await sequelize.query(
             `
-            INSERT INTO e_commerce_store.product_catagories
+            INSERT INTO e_commerce_product.product_catagories
             (
                 name,
                 image,
@@ -129,7 +129,7 @@ exports.updateProductCatagory = async(req,res,next) => {
     try {
         const updateproduct = await sequelize.query(
             `
-           UPDATE e_commerce_store.product_catagories
+           UPDATE e_commerce_product.product_catagories
             SET            
                 name ='${name}',
                 image = '${image}',
@@ -163,7 +163,7 @@ exports.deleteProductCatagory = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delproduct =  await sequelize.query(`
-    DELETE FROM e_commerce_store.product_catagories
+    DELETE FROM e_commerce_product.product_catagories
     WHERE product_catagories_id = ${req.params.product_catagories_id}
     
     `,{ 

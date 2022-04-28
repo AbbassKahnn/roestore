@@ -98,7 +98,7 @@ exports.postShoppingCart = async (req, res, next) => {
 	try {
 		let cart = await sequelize.query(
 			`
-      select * from e_store_cart.shopping_cart 
+      select * from e_commerce_orders.shopping_cart 
       where product_id= '${product_id}' and user_id = '${user_id}'
       `,
 			{
@@ -108,7 +108,7 @@ exports.postShoppingCart = async (req, res, next) => {
 		if (cart.length <= 0) {
 			cart = await sequelize.query(
 				`
-            INSERT INTO e_store_cart.shopping_cart
+            INSERT INTO e_commerce_orders.shopping_cart
             (
               product_id,
               user_id
@@ -147,7 +147,7 @@ exports.updateShoppingCart = async (req, res, next) => {
 	try {
 		const updateshopping_cart = await sequelize.query(
 			`
-         UPDATE e_store_cart.shopping_cart
+         UPDATE e_commerce_orders.shopping_cart
           SET 
           product_id = '${product_id}',           
           user_id = '${user_id}' 

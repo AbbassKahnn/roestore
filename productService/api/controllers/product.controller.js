@@ -227,7 +227,7 @@ exports.postProduct = async (req, res, next) => {
   try {
     const postProduct = await sequelize.query(
       `
-      insert into  e_commerce_store.product (name, title , description, price, quantity, color, product_catagories_id, image)
+      insert into  e_commerce_product.product (name, title , description, price, quantity, color, product_catagories_id, image)
             values(
                 '${name}',
                 '${title}',
@@ -243,14 +243,14 @@ exports.postProduct = async (req, res, next) => {
     });
 
     const newProduct = await sequelize.query(`
-    select * from  e_commerce_store.product where name='${name}' and title='${title}'
+    select * from  e_commerce_product.product where name='${name}' and title='${title}'
     `, {
       type: QueryTypes.SELECT
     });
 
     const detail= await sequelize.query(
       `
-      INSERT INTO e_commerce_store.product_detail 
+      INSERT INTO e_commerce_product.product_detail 
       (product_id, product_style, material, brand_name, place_of_origin, model_number, supple_ability) 
       VALUES('${newProduct[0].product_id}', '${product_style}','${material}', '${brand_name}',
        '${place_of_origin}', '${model_number}', '${supple_ability}');
@@ -305,7 +305,7 @@ exports.updateProduct = async (req, res, next) => {
   try {
     const updateProduct = await sequelize.query(
       `
-           UPDATE e_commerce_store.product_detail
+           UPDATE e_commerce_product.product_detail
             SET 
           product_style='${product_style}',
         material='${material}',
@@ -322,7 +322,7 @@ exports.updateProduct = async (req, res, next) => {
 
     const updateProductDetails = await sequelize.query(
       `
-           UPDATE e_commerce_store.product
+           UPDATE e_commerce_product.product
             SET            
                 name='${name}',
                 title='${title}',
@@ -373,7 +373,7 @@ exports.updateQuantity = async (req, res, next) => {
 
     const updateProductDetails = await sequelize.query(
       `
-           UPDATE e_commerce_store.product
+           UPDATE e_commerce_product.product
             SET            
                 quantity=quantity - '${quantity}' 
               where  product_id ='${req.params.product_id}'
@@ -409,7 +409,7 @@ exports.deleteProduct = async (req, res, next) => {
   const response = new ResponseModel();
   try {
     const delPoduct = await sequelize.query(`
-    DELETE FROM e_commerce_store.product
+    DELETE FROM e_commerce_product.product
     WHERE product_id = ${req.params.product_id}
     
     `, {

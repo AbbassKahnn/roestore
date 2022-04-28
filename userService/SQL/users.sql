@@ -1,6 +1,6 @@
 create database e_commerce_users;
 
-CREATE TABLE e_commerce_users.users (
+CREATE TABLE  users (
 user_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 user_name VARCHAR(100) NOT NULL,
 first_name VARCHAR(30) NOT NULL,

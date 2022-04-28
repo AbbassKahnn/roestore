@@ -1,6 +1,6 @@
 create database e_commerce_orders
  
-create table e_commerce_orders.shopping_cart (
+create table  shopping_cart (
  shopping_cart_id BIGINT UNSIGNED not null  auto_increment primary key,
  product_id BIGINT unsigned not null,
  user_id BIGINT unsigned not null,
@@ -10,7 +10,7 @@ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 deleted_at TIMESTAMP
  );
  
-create table e_commerce_orders.shopping_orders (
+create table  shopping_orders (
  shopping_orders_id BIGINT UNSIGNED not null  auto_increment primary key,
  shopping_cart_id BIGINT unsigned not null,
  user_id BIGINT unsigned not null,

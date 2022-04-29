@@ -4,12 +4,13 @@
 /userService/node_modules
 /order_cartService/node_modules
 /productService/node_modules
+/frontend/node_modules
 
 # production
 /userService/build
 /order_cartService/build
 /productService/build
-
+/frontend/build
 # environment variables
 .env
 

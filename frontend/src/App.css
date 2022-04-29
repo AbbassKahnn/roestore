@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: none;
+}
+.body-background {
+  background-color: #fff;
+}
+
+.navigation-container a {
+  text-decoration: none !important;
+  color: rgb(187, 184, 184) !important;
+  font-weight: bold;
+}
+
+.navigation-container a:hover {
+  color: rgb(27, 4, 80) !important;
+}
+
+.banner-products-image {
+  background-image: url('./assets/womenProduct.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 500px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.with-25 {
+  width: 25%;
+}
+
+.with-15 {
+  width: 15%;
+}
+
+.with-10 {
+  width: 10%;
+}
+
+.with-5 {
+  width: 5%;
+}
+
+.with-50px {
+  width: 100px !important;
+}
+
+.with-100 {
+  width: 100% !important;
+}
+.h-50{
+  height: 500px !important;
+}
+
+
+

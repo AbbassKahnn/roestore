@@ -68,7 +68,7 @@ const {user_id, user_name} = JSON.parse(localStorage.getItem('user'));
                             <th>Material</th>
                             <th>Style</th>
                             <th>Price</th>
-                            <th>Supply Ability</th>
+                            <th>Quantity</th>
                             <th>Status</th>
                             </>
 
@@ -77,24 +77,24 @@ const {user_id, user_name} = JSON.parse(localStorage.getItem('user'));
                     </thead>
                     <tbody>
                        { cartItems?.map(ele=>{
-                           return  <tr key={ele.product_id}>
+                           return  <tr key={ele.product.product_id}>
                            
                            {user_name === 'admin' ? <>
                            <td className="with-50px">
-                               <img src={ele.image} alt='' className="with-50px" />
-                               <p>{ele.name} ({ele.title})</p></td>
+                               <img src={ele.product.image} alt='' className="with-50px" />
+                               <p>{ele.product.name} ({ele.product.title})</p></td>
                                <td>{ele.user.first_name} {ele.user.last_name}</td>
                                <td>{ele.user.address}</td>
-                               <td>{ele.brand_name}/{ele.style}/({ele.model_number})</td>
-                               <td>{ele.price}</td>
+                               <td>{ele.product.brand_name}/{ele.product.style}/({ele.product.model_number})</td>
+                               <td>{ele.product.price * ele.orderQuantity}</td>
                                <td>{ele.orderQuantity}</td>
-                           <td>{ele.quantity}</td>
+                           <td>{ele.product.quantity}</td>
                            <td>
                                <select className="form-control"
                                name="shopping_status" value={ele.shopping_status} onChange={(e)=> {
                                    const dt = {
                                     shopping_status: e.target.value,
-                                    quantity: parseInt(ele.quantity) -  parseInt(ele.orderQuantity),
+                                    quantity: parseInt(ele.product.quantity) -  parseInt(ele.orderQuantity),
                                     shopping_orders_id: ele.shopping_orders_id
                                    }
                                    updateOrder(dt)
@@ -105,13 +105,13 @@ const {user_id, user_name} = JSON.parse(localStorage.getItem('user'));
                                </select>
                            </td>
                            </>: <>
-                           <td className="with-50px"><img src={ele.image} alt='' className="with-50px" /></td>
-                           <td>{ele.name} ({ele.title})</td>
-                           <td>{ele.brand_name} ({ele.model_number})</td>
-                           <td>{ele.material}</td>
-                           <td>{ele.style}</td>
-                           <td>{ele.price}</td>
-                           <td>{ele.supply_ability}</td>
+                           <td className="with-50px"><img src={ele.product.image} alt='' className="with-50px" /></td>
+                           <td>{ele.product.name} ({ele.product.title})</td>
+                           <td>{ele.product.brand_name} ({ele.product.model_number})</td>
+                           <td>{ele.product.material}</td>
+                           <td>{ele.product.style}</td>
+                           <td>{ele.product.price * ele.orderQuantity}</td>
+                           <td>{ele.orderQuantity}</td>
                            <td>{ele.shopping_status == 0 ? 'Pending' : ele.shopping_status == 1 ? 'Progress' : 'Delivered'}</td>
                            </>}
                        </tr>

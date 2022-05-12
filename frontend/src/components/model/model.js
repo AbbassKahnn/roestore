@@ -20,18 +20,19 @@ useEffect(() => {
 
 
 const makeOrder = () => {
-    
     const orderDetail = {
       product_id: product.product_id,
       user_id: JSON.parse(localStorage.getItem('user')).user_id,
       quantity: quantity  
     }
 
-    if(parseInt(product.quantity) >= parseInt(orderDetail.quantity)){
+    if(parseInt(product.quantity) >= parseInt(orderDetail.quantity) && orderDetail.quantity > 0){
 
     PostAPIService('http://localhost:5002/shopping_orders', orderDetail).then(res => {
         setMsgHeading('Success')
         setMessage('Your order confirmed.')
+        product.quantity = product.quantity - quantity;
+
     }).catch(err => {
         setMsgHeading('Oops!')
         setMessage('Your order operation failed! please try again');
@@ -47,11 +48,11 @@ action(!active);
 
 return (<>
 
-        <div class="modal-container">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom-0">
-                        <h5 class="modal-title" id="exampleModalLabel">
+        <div className="modal-container">
+            <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div className="modal-content">
+                    <div className="modal-header border-bottom-0">
+                        <h5 className="modal-title" id="exampleModalLabel">
                             {title}
                         </h5>
                         <button type="button"
@@ -59,8 +60,8 @@ return (<>
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <table class="table table-image">
+                    <div className="modal-body">
+                        <table className="table table-image">
                             <thead>
                                 <tr>
                                     <th scope="col"></th>
@@ -72,12 +73,12 @@ return (<>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="w-25">
-                                        <img src={product?.image} class="img-fluid img-thumbnail" alt="" />
+                                    <td className="w-25">
+                                        <img src={product?.image} className="img-fluid img-thumbnail" alt="" />
                                     </td>
                                     <td>{product?.name}</td>
                                     <td>{product?.price}$</td>
-                                    <td class="qty">
+                                    <td className="qty">
                                         <input 
                                         type="number" 
                                         min={1}
@@ -92,9 +93,9 @@ return (<>
                             </tbody>
                         </table>
                     </div>
-                    <div class="modal-footer border-top-0 d-flex justify-content-between">
+                    <div className="modal-footer border-top-0 d-flex justify-content-between">
                         <button type="button" className='btn btn-danger'  onClick={()=>action(!active)} >Close</button>
-                        <button type="button" class="btn btn-success" onClick={makeOrder}>{buttonTxt}</button>
+                        <button type="button" className="btn btn-success" onClick={makeOrder}>{buttonTxt}</button>
                     </div>
                 </div>
             </div>

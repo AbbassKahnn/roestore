@@ -42,8 +42,8 @@ const NavBar = () => {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-start">
           {user?.user_name !== "admin" ?
-          <> <Nav.Link ><Link to='/home'>Home</Link></Nav.Link>
-            <Nav.Link> <Link to='/orders'>My orders</Link></Nav.Link>
+          <> 
+            { JSON.parse(localStorage.getItem('user')) && <Nav.Link> <Link to='/orders'>My orders</Link></Nav.Link>}
             </>: <> 
             <Nav.Link ><Link to='/catagory'>Catagories</Link></Nav.Link>
             <Nav.Link ><Link to='/items'>Items</Link></Nav.Link>
@@ -51,7 +51,7 @@ const NavBar = () => {
             </>}
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
-          {user?.user_name !== "admin" &&
+          {user?.user_name !== "admin" && JSON.parse(localStorage.getItem('user')) &&
             <Form className="d-flex" onSubmit={searchItem}>
               <FormControl
                 type="search"
@@ -64,15 +64,15 @@ const NavBar = () => {
               <button className="btn btn-info" type='submit'>Search</button>
             </Form>}
             <Navbar.Text className='d-flex'>
-               <div className='cursor-pointer px-4'>
+               {JSON.parse(localStorage.getItem('user')) && <div className='cursor-pointer px-4'>
                {user?.user_name !== "admin" &&
                <Link to='/cart'>
                <img src={CART} alt='' height={30}  />
                </Link>
                }
-              </div>
-              <div>
+              </div>}
 
+              <div>
               {user?.user_id? <Link to='/login' >
                 <button className='btn btn-danger' onClick={logout}>Logout</button>
                 </Link>: <Link to='/login' >

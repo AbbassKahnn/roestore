@@ -45,9 +45,9 @@ const ShadowCard = ({
                 </Link>
                 <Card.Body>
                     <Card.Title>{name} <small>{title}</small></Card.Title>
-                    <div class="col text-center pb-3">
+                    {JSON.parse(localStorage.getItem('user')) && <div className="col text-center pb-3">
                         <button className="btn-primary" onClick={()=> addToCart()}>ADD TO CART</button>
-                    </div>
+                    </div>}
                     <Card.Footer>
                         <small className="text-muted"><strong>Price ${price} </strong>- Quantity {quantity}</small>
                     </Card.Footer>

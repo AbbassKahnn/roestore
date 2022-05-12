@@ -112,7 +112,7 @@ exports.postShoppingCart = async (req, res, next) => {
 		// check if new cart already created.
 		let cart = await sequelize.query(
 			`
-      select * from  shopping_cart 
+      select * from shopping_cart 
       where product_id= '${product_id}' and user_id = '${user_id}'
       `,
 			{
@@ -123,7 +123,7 @@ exports.postShoppingCart = async (req, res, next) => {
 		if (cart.length <= 0) {
 			cart = await sequelize.query(
 				`
-            INSERT INTO  shopping_cart
+            INSERT INTO shopping_cart
             (
               product_id,
               user_id
@@ -161,7 +161,7 @@ exports.updateShoppingCart = async (req, res, next) => {
 	try {
 		const updateshopping_cart = await sequelize.query(
 			`
-         UPDATE  shopping_cart
+         UPDATE shopping_cart
           SET 
           product_id = '${product_id}',           
           user_id = '${user_id}' 

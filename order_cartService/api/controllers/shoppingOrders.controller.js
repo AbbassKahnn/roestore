@@ -37,14 +37,14 @@ exports.getAllShoppingOrders = async(req,res,next) => {
   //Bind product with order by matching product (product id) with orders (product id) and
 	// push product object with order detail in shoppingOderArr.
   const shoppingOderArr = [];
-  for(let i= 0; i < product_ids.length; i++){
+  for(let i= 0; i < ShoppingOrder.length; i++){
     for(let j=0; j < product.data.data.length; j++){
       if(product_ids[i] === product.data.data[j].product_id){
-        product.data.data[j].shopping_orders_id = ShoppingOrder[i].shopping_orders_id;
-        product.data.data[j].shopping_status= ShoppingOrder[i].shopping_status
-        product.data.data[j].orderQuantity = ShoppingOrder[i].quantity
-        product.data.data[j].user_id = ShoppingOrder[i].user_id
-        shoppingOderArr.push(product.data.data[j])
+        ShoppingOrder[i].product = product.data.data[j];
+        ShoppingOrder[i].orderQuantity = ShoppingOrder[i].quantity
+        delete ShoppingOrder[i].quantity
+        
+        shoppingOderArr.push(ShoppingOrder[i])
       }
     }
   }
@@ -108,15 +108,20 @@ exports.getAllOrdersByUserId = async(req,res,next) => {
 
   //Bind product with order by matching product (product id) with orders (product id) and
 	// push product object with order detail in shoppingOderArr.
-  for(let i= 0; i<product_ids.length; i++){
+  for(let i= 0; i<ShoppingOrder.length; i++){
     for(let j=0; j<product.data.data.length; j++){
-      if(product_ids[i] === product.data.data[j].product_id){
-        product.data.data[j].shopping_cart_id = ShoppingOrder[i].shopping_order_id;
-        product.data.data[j].shopping_status = ShoppingOrder[i].shopping_status;
-        shoppingOderArr.push(product.data.data[j])
+
+      if(ShoppingOrder[i].product_id === product.data.data[j].product_id){
+        ShoppingOrder[i].orderQuantity = ShoppingOrder[i].quantity;
+        delete ShoppingOrder[i].quantity;
+        ShoppingOrder[i].product =  product.data.data[j];
+        shoppingOderArr.push(ShoppingOrder[i]);
+
       }
+
     }
   }
+
   console.info('all records are fetched from database');
   response.setData(shoppingOderArr);
   response.setStatus(ReasonPhrases.OK);
@@ -155,31 +160,12 @@ exports.postShoppingOrders = async(req,res,next) => {
         quantity
     } = req.body;
     try {
-    // first check if order already created.
-      const checkOrder = await sequelize.query(`
-      select * from  shopping_orders 
-      where product_id= '${product_id}' and user_id = '${user_id}'
-      `,{
-        type: QueryTypes.SELECT
-    }) ;
 
       let order;
-      // check if order already created then update order else create new order
-      if(checkOrder.length > 0){
-        order= await sequelize.query(
-          `
-         UPDATE  shopping_orders
-          SET            
-            quantity = '${quantity}' 
-          WHERE  product_id ='${product_id}' and  user_id = '${user_id}'  
-          `, {
-              type: QueryTypes.UPDATE
-          });
-          
-      } else {
+      
          order = await sequelize.query(
           `
-          INSERT INTO  shopping_orders
+          INSERT INTO shopping_orders
           (
               product_id,
               user_id,
@@ -193,18 +179,22 @@ exports.postShoppingOrders = async(req,res,next) => {
           `, {
               type: QueryTypes.INSERT
           });
-      }
+
+          // product service call to update product quantity in product service .
+        await Axios.patch(`http://localhost:5001/product/${product_id}`, {
+          quantity: quantity
+        } );
+
       // delete product from shopping cart if exist.
       await sequelize.query(`
-          DELETE FROM  shopping_cart
+          DELETE FROM shopping_cart
           WHERE product_id = ${product_id} and user_id = ${user_id}
           
           `,{ 
               type: QueryTypes.DELETE
           });
-// product service call to update product quantity in product service .
-        await Axios.patch(`http://localhost:5001/product/${product_id}`, {quantity: quantity} )
-            response.setData(checkOrder);
+
+            response.setData(order);
             response.setStatus(ReasonPhrases.CREATED);
             return res.status(StatusCodes.CREATED).send(response);
     } catch (err) {
@@ -236,7 +226,7 @@ exports.updateShoppingOrders = async(req,res,next) => {
     try {
         const updateshoppingorder = await sequelize.query(
             `
-           UPDATE  shopping_orders
+           UPDATE shopping_orders
             SET            
               shopping_status = '${shopping_status}',
               quantity = '${quantity}' 

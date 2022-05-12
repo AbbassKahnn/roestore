@@ -52,7 +52,7 @@ exports.postProductDetail = async(req,res,next) => {
     try {
         const postProdetail = await sequelize.query(
             `
-            INSERT INTO e_commerce_users_store.product_detail
+            INSERT INTO  product_detail
             (
                 product_id,
                 product_style,
@@ -110,7 +110,7 @@ exports.updateProductDetail = async(req,res,next) => {
     try {
         const updateProeDtail = await sequelize.query(
             `
-           UPDATE e_commerce_users_store.product_detail
+           UPDATE  product_detail
             SET 
             product_style ='${product_style}',
             material ='${material}',
@@ -149,7 +149,7 @@ exports.deleteProductDetail = async(req,res, next)=> {
     const response = new ResponseModel();
 try {
     const delProDetail =  await sequelize.query(`
-    DELETE FROM e_commerce_users_store.product_detail
+    DELETE FROM  product_detail
     WHERE product_id = ${req.body.product_detail_id}
     
     `,{ 

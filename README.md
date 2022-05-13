@@ -6,9 +6,9 @@ so in order to run it successfuly please do follow these steps
 # for clone the code form git
 
 we will open the terminal and do
-'''
+```
 git clone https://github.com/AbbassKahnn/roestore/
-'''
+```
 
 ## for database 
 
